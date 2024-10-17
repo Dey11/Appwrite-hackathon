@@ -1,12 +1,19 @@
 "use client"
 
 import Link from "next/link"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "./ui/button"
 import { Menu, X } from "lucide-react"
+import authService from "@/appwrite/auth"
+import { usePathname } from "next/navigation"
 
 const Navbar = () => {
+  const path = usePathname()
+  if (path == "/login" || path == "/signup") {
+    return null
+  }
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState<string | null>(null)
 
   const navLinks = [
     { href: "/components", label: "Components" },
@@ -18,6 +25,18 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+
+  useEffect(() => {
+    async function getUser() {
+      const session = await authService.getSession()
+      if (session == null) {
+        setUser(null)
+      } else {
+        setUser(session.$id)
+      }
+    }
+    getUser()
+  }, [])
 
   return (
     <nav className="fixed z-50 mt-5 w-full px-4 py-2 md:px-0">
@@ -35,11 +54,22 @@ const Navbar = () => {
           ))}
         </div>
         <div className="hidden md:block">
-          <Link href="/login">
-            <Button className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]">
-              Log In
+          {user != null ? (
+            <Button
+              className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]"
+              onClick={() => {
+                authService.logout()
+              }}
+            >
+              Log Out
             </Button>
-          </Link>
+          ) : (
+            <Link href="/login">
+              <Button className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]">
+                Log In
+              </Button>
+            </Link>
+          )}
         </div>
         <button
           className="md:hidden"
@@ -61,13 +91,22 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/login"
-            className="block text-sm"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Log In
-          </Link>
+          {user != null ? (
+            <Button
+              className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]"
+              onClick={() => {
+                authService.logout()
+              }}
+            >
+              Log Out
+            </Button>
+          ) : (
+            <Link href="/login">
+              <Button className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]">
+                Log In
+              </Button>
+            </Link>
+          )}
         </div>
       )}
     </nav>
