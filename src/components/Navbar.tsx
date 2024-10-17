@@ -29,10 +29,10 @@ const Navbar = () => {
   useEffect(() => {
     async function getUser() {
       const session = await authService.getSession()
-      if (session == null) {
+      if (!session.success) {
         setUser(null)
       } else {
-        setUser(session.$id)
+        setUser(session.payload.$id)
       }
     }
     getUser()
@@ -59,6 +59,7 @@ const Navbar = () => {
               className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]"
               onClick={() => {
                 authService.logout()
+                setUser(null)
               }}
             >
               Log Out
