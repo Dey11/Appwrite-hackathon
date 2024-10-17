@@ -1,7 +1,7 @@
 import AuthComponent from "@/components/AuthComponent"
 
 const page = () => {
-  return <AuthComponent path="/login" />
+  return <AuthComponent path="/signup" />
 }
 
 export default page

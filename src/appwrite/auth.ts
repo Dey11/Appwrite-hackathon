@@ -39,6 +39,8 @@ export class AuthService {
         email,
         password,
       )
+      console.log(response,"res")
+
       return response
     } catch (error) {
       console.error(error)
@@ -46,11 +48,11 @@ export class AuthService {
     }
   }
 
-  async loginWithGoogle() {
+  async OAuthLogin(provider: OAuthProvider) {
     try {
       const response = await this.account.createOAuth2Session(
-        OAuthProvider.Google,
-        `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+        provider,
+        `${process.env.NEXT_PUBLIC_APP_URL}`,
         `${process.env.NEXT_PUBLIC_APP_URL}`,
       )
       return response
