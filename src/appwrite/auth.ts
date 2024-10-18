@@ -6,24 +6,10 @@ import {
   Models,
   OAuthProvider,
 } from "appwrite"
+import { AuthResponse, ErrorResponse, Session, User } from "./types"
+import dbService from "./db"
 
-type User = Models.User<Models.Preferences>
-type Session = Models.Session
-
-type AuthSuccess<T> = {
-  success: true
-  message: string
-  payload: T
-}
-
-type AuthError = {
-  success: false
-  message: string
-}
-
-type AuthResponse<T> = AuthSuccess<T> | AuthError
-
-export class AuthService {
+class AuthService {
   client: Client
   account: Account
 
@@ -51,6 +37,7 @@ export class AuthService {
   ): Promise<AuthResponse<User>> {
     try {
       const response = await this.account.create(ID.unique(), email, password)
+      const user = await dbService.createUser(response.$id, email)
       return { success: true, message: "Success", payload: response }
     } catch (error) {
       return this.handleError(error)
@@ -94,7 +81,7 @@ export class AuthService {
     }
   }
 
-  private handleError(error: unknown): AuthError {
+  private handleError(error: unknown): ErrorResponse {
     console.error(error)
     if (error instanceof AppwriteException) {
       return { success: false, message: error.message }
