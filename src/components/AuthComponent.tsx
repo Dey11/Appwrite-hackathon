@@ -48,7 +48,7 @@ const AuthComponent = ({ path }: { path: string }) => {
           setError(response.message)
           return
         }
-        router.push("/")
+        router.push("/dashboard")
         return
       } else {
         const response = await authService.signUpWithEmail(email, password)
