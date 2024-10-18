@@ -86,3 +86,50 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Styles for Webkit browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: calc(var(--scrollbar-width) / 2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+}
+
+/* Styles for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Optional: Adjust scrollbar width for Firefox */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+  }
+}
+
+/* Hide scrollbar for WebKit browsers on macOS */
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) {
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
