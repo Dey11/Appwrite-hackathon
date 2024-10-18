@@ -38,9 +38,6 @@ const Navbar = () => {
     getUser()
   }, [])
 
-  console.log("user",user);
-  
-
   return (
     <nav className="fixed z-50 mt-5 w-full px-4 py-2 md:px-0">
       <div className="relative mx-auto flex h-[40px] w-full max-w-[660px] items-center justify-between rounded-2xl border-[1px] border-zinc-400 p-2 shadow-[4px_-1px_25.6px_0px_rgba(76,76,76,0.5)] backdrop-blur-lg">
