@@ -1,39 +1,15 @@
-"use client"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { Plus, PlusCircle } from "lucide-react"
-import AddProjectDialog, { NewProject } from "@/components/AddProjectDialog"
+import AddProjectDialog from "@/components/AddProjectDialog"
 
 const Page = () => {
-  const [projects, setProjects] = useState([
+  const projects = [
     { id: 1, name: "Demo Site 1", count: 5, live: true },
     { id: 2, name: "Demo Site 2", count: 3, live: false },
     { id: 3, name: "Demo Site 3", count: 7, live: false },
     { id: 4, name: "Demo Site 4", count: 2, live: false },
     { id: 5, name: "Demo Site 5", count: 4, live: true },
-  ])
-
-  const handleAddProject = (newProject: NewProject) => {
-    // Here you would typically send the data to your backend
-    console.log(newProject)
-    // Then update the projects list
-    // This would typically be done by fetching the updated list from the server
-    // or by optimistically updating the local state
-  }
+  ]
 
   return (
     <div className="mt-36 px-20">
@@ -45,7 +21,7 @@ const Page = () => {
       </p>
       <main className="flex flex-col gap-6">
         <div className="flex justify-end">
-          <AddProjectDialog onAddProject={handleAddProject} />
+          <AddProjectDialog />
         </div>
         <div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
