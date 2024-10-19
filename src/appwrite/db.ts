@@ -145,6 +145,7 @@ class DatabaseService {
     fields: {
       name: string
       type: string
+      required: boolean
     }[],
   ): Promise<DbResponse<ProjectDocument>> {
     try {
@@ -153,7 +154,9 @@ class DatabaseService {
         throw new Error(currentUser.message)
       }
 
-      if (currentUser.payload.projectLimit == 0) {
+      if (
+        currentUser.payload.project.length > currentUser.payload.projectLimit
+      ) {
         throw new Error("You have reached the maximum number of projects")
       }
       if (currentUser.payload.maxFields < fields.length) {
@@ -178,7 +181,6 @@ class DatabaseService {
         collectionId.user,
         currentUser.payload.$id,
         {
-          projectLimit: currentUser.payload.projectLimit - 1,
           project: [...currentUser.payload.project, newProject.$id],
         },
       )
