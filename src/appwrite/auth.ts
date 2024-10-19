@@ -63,7 +63,7 @@ class AuthService {
     try {
       await this.account.createOAuth2Session(
         provider,
-        `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
+        `${process.env.NEXT_PUBLIC_APP_URL}/projects`,
         process.env.NEXT_PUBLIC_APP_URL ?? "",
       )
       return { success: true, message: "Success", payload: undefined }
