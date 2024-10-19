@@ -11,13 +11,13 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Star } from "lucide-react"
+import { toast } from "sonner"
 
 interface FormField {
   id: string
   name: string
   type: "string" | "number" | "email" | "textarea" | "stars"
   required: boolean
-  value: string | number
 }
 
 interface ProjectData {
@@ -32,6 +32,7 @@ interface ProjectData {
 
 interface PreviewCardProps {
   projectData: ProjectData
+  updateField: (id: string, updates: Partial<FormField>) => void
 }
 
 export default function PreviewCard({ projectData }: PreviewCardProps) {
@@ -55,19 +56,13 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
           />
         )
       case "stars":
-        return <StarRating value={Number(field.value)} onChange={() => {}} />
+        return <StarRating value={3} />
       default:
         return null
     }
   }
 
-  const StarRating = ({
-    value,
-    onChange,
-  }: {
-    value: number
-    onChange: (value: number) => void
-  }) => (
+  const StarRating = ({ value }: { value: number }) => (
     <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
@@ -75,7 +70,6 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
           className={`h-6 w-6 cursor-pointer ${
             star <= value ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
           }`}
-          onClick={() => onChange(star)}
         />
       ))}
     </div>
@@ -102,7 +96,7 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-6 text-black">
+          <div className="space-y-6 text-black">
             {projectData.fields.map((field) => (
               <div key={field.id} className="space-y-2">
                 <Label className="text-white">
@@ -115,12 +109,14 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
               </div>
             ))}
             <Button
-              type="submit"
               className="w-full bg-white/90 text-gray-800 hover:bg-white"
+              onClick={() => {
+                toast.success("just a preview ")
+              }}
             >
               Submit Feedback
             </Button>
-          </form>
+          </div>
         </CardContent>
       </div>
     </Card>

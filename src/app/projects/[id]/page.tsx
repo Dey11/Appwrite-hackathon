@@ -6,13 +6,37 @@ import ProjectDetailsCard from "@/components/ProjectDetailsCard"
 import React, { useEffect, useState } from "react"
 import dbService from "@/appwrite/db"
 import { useParams, usePathname } from "next/navigation"
+import { toast } from "sonner"
+import { z } from "zod"
+import { toFormikValidationSchema } from "zod-formik-adapter"
+import { useFormik } from "formik"
+
+const projectSchema = z.object({
+  name: z.string().min(1, "Project name is required"),
+  description: z.string().min(1, "Project description is required"),
+  fields: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string().min(1, "Field name is required"),
+        type: z.enum(["string", "number", "email", "textarea", "stars"]),
+        required: z.boolean(),
+      }),
+    )
+    .min(1, "At least one field is required"),
+  style: z.object({
+    type: z.enum(["gradient", "image"]),
+    value: z.string(),
+  }),
+})
+
+type ProjectFormValues = z.infer<typeof projectSchema>
 
 export interface FormField {
   id: string
   name: string
   type: "string" | "number" | "email" | "textarea" | "stars"
   required: boolean
-  value: string | number
 }
 
 export interface ProjectData {
@@ -69,31 +93,46 @@ export const BACKGROUND_STYLES = {
 
 export default function ProjectFormBuilder() {
   const { id }: { id: string } = useParams()
-
   const [isLoading, setIsLoading] = useState(true)
-  const [projectData, setProjectData] = useState<ProjectData>({
-    name: "",
-    description: "",
-    style: {
-      type: "gradient",
-      value: BACKGROUND_STYLES.gradients[0].value,
-    },
-    fields: [],
-  })
+  const [maxFieldLimit, setMaxFieldLimit] = useState<number>(5)
   const [projectDetails, setProjectDetails] = useState({
     projectId: "",
     secretKey: "",
   })
-
   const [isLive, setIsLive] = useState(false)
+
+  const formik = useFormik<ProjectFormValues>({
+    initialValues: {
+      name: "",
+      description: "",
+      style: {
+        type: "gradient",
+        value: BACKGROUND_STYLES.gradients[0].value,
+      },
+      fields: [],
+    },
+    validationSchema: toFormikValidationSchema(projectSchema),
+    onSubmit: async (values) => {
+      try {
+        // update db call here
+        console.log(values)
+      } catch (error) {
+        toast.error("An error occurred while updating the project")
+      }
+    },
+  })
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true)
         const project = await dbService.findProjectById(id)
-        if (project.success) {
-          const projectObject: ProjectData = {
+        const user = await dbService.getCurrentUser()
+
+        if (project.success && user.success) {
+          setMaxFieldLimit(user.payload.maxFields)
+
+          const projectObject: ProjectFormValues = {
             name: project.payload.name || "Default Project Name",
             description:
               project.payload.description || "Default project description",
@@ -118,7 +157,7 @@ export default function ProjectFormBuilder() {
             projectId: project.payload.$id,
             secretKey: project.payload.secret,
           })
-          setProjectData(projectObject)
+          formik.setValues(projectObject)
           setIsLive(project.payload.live)
         }
       } catch (error) {
@@ -137,34 +176,30 @@ export default function ProjectFormBuilder() {
       name: "New Field",
       type: "string",
       required: false,
-      value: "",
     }
-    setProjectData({
-      ...projectData,
-      fields: [...projectData.fields, newField],
-    })
+    formik.setFieldValue("fields", [...formik.values.fields, newField])
   }
 
   const deleteField = (id: string) => {
-    setProjectData({
-      ...projectData,
-      fields: projectData.fields.filter((field) => field.id !== id),
-    })
+    formik.setFieldValue(
+      "fields",
+      formik.values.fields.filter((field: { id: string }) => field.id !== id),
+    )
   }
 
   const updateField = (id: string, updates: Partial<FormField>) => {
-    setProjectData({
-      ...projectData,
-      fields: projectData.fields.map((field) =>
+    formik.setFieldValue(
+      "fields",
+      formik.values.fields.map((field: { id: string }) =>
         field.id === id ? { ...field, ...updates } : field,
       ),
-    })
+    )
   }
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
+    toast.success("copied to clipboard")
   }
-
   return (
     <div className="container mx-auto mt-36 max-w-7xl p-6">
       <div className="mb-8">
@@ -179,14 +214,17 @@ export default function ProjectFormBuilder() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="space-y-6">
           <FormSettingsCard
-            projectData={projectData}
-            setProjectData={setProjectData}
+            projectData={formik.values}
+            setProjectData={(newData) => formik.setValues(newData)}
+            errors={formik.errors}
           />
           <FormFieldsCard
-            projectData={projectData}
+            projectData={formik.values}
             addField={addField}
             deleteField={deleteField}
             updateField={updateField}
+            errors={formik.errors}
+            maxFieldLimit={maxFieldLimit}
           />
         </div>
         <div className="space-y-6">
@@ -196,8 +234,11 @@ export default function ProjectFormBuilder() {
             isLive={isLive}
             setIsLive={setIsLive}
             copyToClipboard={copyToClipboard}
+            onSaveChanges={() => formik.handleSubmit()}
+            valid={formik.isValid}
+            submitting={formik.isSubmitting}
           />
-          <PreviewCard projectData={projectData} />
+          <PreviewCard projectData={formik.values} updateField={updateField} />
         </div>
       </div>
     </div>

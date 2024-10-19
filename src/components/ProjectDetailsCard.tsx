@@ -18,6 +18,9 @@ interface ProjectDetailsCardProps {
   isLive: boolean
   setIsLive: React.Dispatch<React.SetStateAction<boolean>>
   copyToClipboard: (text: string) => void
+  onSaveChanges: () => void
+  valid: boolean
+  submitting: boolean
 }
 
 export default function ProjectDetailsCard({
@@ -26,6 +29,9 @@ export default function ProjectDetailsCard({
   isLive,
   setIsLive,
   copyToClipboard,
+  onSaveChanges,
+  valid,
+  submitting,
 }: ProjectDetailsCardProps) {
   return (
     <Card>
@@ -73,7 +79,9 @@ export default function ProjectDetailsCard({
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <Button>Save Changes & Publish</Button>
+          <Button onClick={onSaveChanges} disabled={!valid || submitting}>
+            Save Changes
+          </Button>
           <Button>Export as component</Button>
         </div>
       </CardContent>

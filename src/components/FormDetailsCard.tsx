@@ -14,15 +14,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import { BACKGROUND_STYLES, ProjectData } from "@/app/projects/[id]/page"
+import { FormikErrors } from "formik"
 
 interface FormSettingsCardProps {
   projectData: ProjectData
   setProjectData: React.Dispatch<React.SetStateAction<ProjectData>>
+  errors: FormikErrors<ProjectData>
 }
 
 export default function FormSettingsCard({
   projectData,
   setProjectData,
+  errors,
 }: FormSettingsCardProps) {
   return (
     <Card>
@@ -39,6 +42,9 @@ export default function FormSettingsCard({
               setProjectData({ ...projectData, name: e.target.value })
             }
           />
+          {errors.name && (
+            <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+          )}
         </div>
         <div>
           <Label>Form Description</Label>
@@ -51,6 +57,9 @@ export default function FormSettingsCard({
               })
             }
           />
+          {errors.description && (
+            <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+          )}
         </div>
         <div className="space-y-4">
           <Label>Form Style</Label>

@@ -22,15 +22,15 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { Plus, Trash2, ChevronDown } from "lucide-react"
+import { Plus, Trash2, ChevronDown, PlusCircle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { FormikErrors } from "formik"
 
 interface FormField {
   id: string
   name: string
   type: "string" | "number" | "email" | "textarea" | "stars"
   required: boolean
-  value: string | number
 }
 
 interface ProjectData {
@@ -48,6 +48,8 @@ interface FormFieldsCardProps {
   addField: () => void
   deleteField: (id: string) => void
   updateField: (id: string, updates: Partial<FormField>) => void
+  errors: FormikErrors<ProjectData>
+  maxFieldLimit: number
 }
 
 export default function FormFieldsCard({
@@ -55,7 +57,10 @@ export default function FormFieldsCard({
   addField,
   deleteField,
   updateField,
+  errors,
+  maxFieldLimit = 5,
 }: FormFieldsCardProps) {
+
   return (
     <Card>
       <CardHeader>
@@ -63,7 +68,7 @@ export default function FormFieldsCard({
         <CardDescription>Add and customize form fields</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        {projectData.fields.map((field) => (
+        {projectData.fields.map((field, index) => (
           <Collapsible
             key={field.id}
             className="rounded-lg border bg-card shadow-sm transition-all hover:shadow-md"
@@ -93,6 +98,14 @@ export default function FormFieldsCard({
                             })
                           }
                         />
+                        {errors.fields &&
+                          typeof errors.fields[index] === "object" &&
+                          errors.fields[index] !== null &&
+                          "name" in errors.fields[index] && (
+                            <p className="mt-1 text-sm text-red-500">
+                              {errors.fields[index].name}
+                            </p>
+                          )}
                       </div>
                       <div>
                         <Label>Type</Label>
@@ -141,8 +154,19 @@ export default function FormFieldsCard({
             </CollapsibleContent>
           </Collapsible>
         ))}
-        <Button onClick={addField} className="w-full" variant="outline">
-          <Plus className="mr-2 h-4 w-4" /> Add New Field
+        {errors.fields && typeof errors.fields === "string" && (
+          <p className="mt-1 text-sm text-red-500">{errors.fields}</p>
+        )}
+        <Button
+          type="button"
+          variant="outline"
+          onClick={addField}
+          className="w-full"
+          disabled={projectData.fields.length >= maxFieldLimit}
+        >
+          <PlusCircle className="mr-2" size={15} />
+          Add field{" "}
+          {projectData.fields.length >= maxFieldLimit && "(Limit reached)"}
         </Button>
       </CardContent>
     </Card>
