@@ -3,6 +3,7 @@ import { Inter, Poppins, Quicksand } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/Navbar"
+import { Toaster } from "@/components/ui/sonner"
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -38,6 +39,7 @@ export default function RootLayout({
             <Navbar />
           </div>
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

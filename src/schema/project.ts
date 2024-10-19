@@ -3,6 +3,7 @@ import { z } from "zod"
 export const fieldSchema = z.object({
   name: z.string().min(1, "Field name is required"),
   type: z.enum(["string", "number", "email", "textarea", "stars"]),
+  required: z.boolean(),
 })
 
 export const projectFormSchema = z.object({
@@ -16,5 +17,5 @@ export type ProjectFormValues = z.infer<typeof projectFormSchema>
 export const initialValues: ProjectFormValues = {
   name: "",
   description: "",
-  fields: [{ name: "", type: "string" }],
+  fields: [{ name: "", type: "string", required: true }],
 }
