@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation"
 
 const Navbar = () => {
   const path = usePathname()
-  if (path == "/login" || path == "/signup") {
+  if (path == "/login" || path == "/signup" || path.includes("/preview")) {
     return null
   }
   const [isMenuOpen, setIsMenuOpen] = useState(false)

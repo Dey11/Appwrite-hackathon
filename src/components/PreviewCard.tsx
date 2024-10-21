@@ -1,3 +1,4 @@
+"use client"
 import React from "react"
 import {
   Card,
@@ -32,7 +33,6 @@ interface ProjectData {
 
 interface PreviewCardProps {
   projectData: ProjectData
-  updateField: (id: string, updates: Partial<FormField>) => void
 }
 
 export default function PreviewCard({ projectData }: PreviewCardProps) {
@@ -88,7 +88,7 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
             }
       }
     >
-      <div className="bg-black/50 backdrop-blur-[1px]">
+      <div className="bg-black/40 backdrop-blur-[1px]">
         <CardHeader className="text-white">
           <CardTitle className="text-2xl">{projectData.name}</CardTitle>
           <CardDescription className="text-white/90">

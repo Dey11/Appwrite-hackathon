@@ -3,13 +3,23 @@ import FormFieldsCard from "@/components/FormFieldsCard"
 import FormSettingsCard from "@/components/FormDetailsCard"
 import PreviewCard from "@/components/PreviewCard"
 import ProjectDetailsCard from "@/components/ProjectDetailsCard"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import dbService from "@/appwrite/db"
-import { useParams, usePathname } from "next/navigation"
+import { useParams } from "next/navigation"
 import { toast } from "sonner"
 import { z } from "zod"
 import { toFormikValidationSchema } from "zod-formik-adapter"
 import { useFormik } from "formik"
+import { Collection } from "@/appwrite/types"
+import isEqual from "lodash/isEqual"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 const projectSchema = z.object({
   name: z.string().min(1, "Project name is required"),
@@ -28,6 +38,7 @@ const projectSchema = z.object({
     type: z.enum(["gradient", "image"]),
     value: z.string(),
   }),
+  live: z.boolean(),
 })
 
 type ProjectFormValues = z.infer<typeof projectSchema>
@@ -47,6 +58,7 @@ export interface ProjectData {
     type: "gradient" | "image"
     value: string
   }
+  live: boolean
 }
 export const BACKGROUND_STYLES = {
   gradients: [
@@ -73,20 +85,20 @@ export const BACKGROUND_STYLES = {
     {
       id: "sunny vibes",
       name: "sunny vibes",
-      value: "/sunny.webp",
-      preview: "/sunny.webp",
+      value: "/sunny.jpg",
+      preview: "/sunny.jpg",
     },
     {
       id: "forest vibes",
       name: "forest vibes",
-      value: "/forest.webp",
-      preview: "/forest.webp",
+      value: "/forest.jpg",
+      preview: "/forest.jpg",
     },
     {
       id: "graphitti",
       name: "graphitti Shapes",
-      value: "/graphitti.jpg",
-      preview: "/graphitti.jpg",
+      value: "/leaves.png",
+      preview: "/leaves.png",
     },
   ],
 }
@@ -99,7 +111,8 @@ export default function ProjectFormBuilder() {
     projectId: "",
     secretKey: "",
   })
-  const [isLive, setIsLive] = useState(false)
+  const [initialFormValues, setInitialFormValues] =
+    useState<ProjectFormValues | null>(null)
 
   const formik = useFormik<ProjectFormValues>({
     initialValues: {
@@ -110,12 +123,34 @@ export default function ProjectFormBuilder() {
         value: BACKGROUND_STYLES.gradients[0].value,
       },
       fields: [],
+      live: false,
     },
+    enableReinitialize: true,
     validationSchema: toFormikValidationSchema(projectSchema),
     onSubmit: async (values) => {
       try {
         // update db call here
-        console.log(values)
+        const updatedProject = await dbService.updateDocument(
+          Collection.project,
+          id,
+          {
+            name: values.name,
+            description: values.description,
+            fields: JSON.stringify(
+              values.fields.map((field) => {
+                return {
+                  name: field.name,
+                  type: field.type,
+                  required: field.required,
+                }
+              }),
+            ),
+            image: JSON.stringify(values.style),
+            live: values.live,
+          },
+        )
+        setInitialFormValues(values)
+        toast.success("project updated successfully")
       } catch (error) {
         toast.error("An error occurred while updating the project")
       }
@@ -136,10 +171,7 @@ export default function ProjectFormBuilder() {
             name: project.payload.name || "Default Project Name",
             description:
               project.payload.description || "Default project description",
-            style: {
-              type: "gradient",
-              value: BACKGROUND_STYLES.gradients[0].value,
-            },
+            style: JSON.parse(project.payload.image),
             fields: JSON.parse(project.payload.fields).map(
               (
                 field: { name: string; type: string; required: boolean },
@@ -152,13 +184,14 @@ export default function ProjectFormBuilder() {
                 value: field.type === "stars" ? 0 : "",
               }),
             ),
+            live: project.payload.live,
           }
           setProjectDetails({
             projectId: project.payload.$id,
             secretKey: project.payload.secret,
           })
           formik.setValues(projectObject)
-          setIsLive(project.payload.live)
+          setInitialFormValues(projectObject)
         }
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -200,6 +233,39 @@ export default function ProjectFormBuilder() {
     navigator.clipboard.writeText(text)
     toast.success("copied to clipboard")
   }
+
+  const hasChanges = useCallback(() => {
+    if (!initialFormValues) return false
+    return !isEqual(formik.values, initialFormValues)
+  }, [formik.values, initialFormValues])
+
+  const reorderFields = (startIndex: number, endIndex: number) => {
+    const newFields = Array.from(formik.values.fields)
+    const [reorderedItem] = newFields.splice(startIndex, 1)
+    newFields.splice(endIndex, 0, reorderedItem)
+    formik.setFieldValue("fields", newFields)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mt-36 px-4 sm:px-6 md:px-20">
+        <div className="mb-8">
+          <h1 className="bg-gradient-to-bl from-[#FF555F] to-[#FE8888] bg-clip-text py-2 text-center text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl">
+            Form Builder
+          </h1>
+          <p className="text-center text-xs text-zinc-400 sm:text-sm">
+            Customize your feedback form
+          </p>
+        </div>
+        <main className="flex flex-col gap-6">
+          <div className="flex h-96 items-center justify-center">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#FE8888] border-t-transparent" />
+          </div>
+        </main>
+      </div>
+    )
+  }
+
   return (
     <div className="container mx-auto mt-36 max-w-7xl p-6">
       <div className="mb-8">
@@ -209,6 +275,23 @@ export default function ProjectFormBuilder() {
         <p className="text-center text-xs text-zinc-400 sm:text-sm">
           Customize your feedback form
         </p>
+        <div className="mt-10">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Rroist</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/projects">Projects</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{id}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -219,6 +302,7 @@ export default function ProjectFormBuilder() {
             errors={formik.errors}
           />
           <FormFieldsCard
+            reorderFields={reorderFields}
             projectData={formik.values}
             addField={addField}
             deleteField={deleteField}
@@ -231,14 +315,17 @@ export default function ProjectFormBuilder() {
           <ProjectDetailsCard
             projectId={projectDetails.projectId}
             secretKey={projectDetails.secretKey}
-            isLive={isLive}
-            setIsLive={setIsLive}
+            isLive={formik.values.live}
+            setIsLive={() => {
+              formik.setFieldValue("live", !formik.values.live)
+            }}
             copyToClipboard={copyToClipboard}
             onSaveChanges={() => formik.handleSubmit()}
             valid={formik.isValid}
             submitting={formik.isSubmitting}
+            hasChanges={hasChanges()}
           />
-          <PreviewCard projectData={formik.values} updateField={updateField} />
+          <PreviewCard projectData={formik.values} />
         </div>
       </div>
     </div>

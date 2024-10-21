@@ -189,7 +189,6 @@ export default function AddProjectDialog({
                         checked={field.required}
                         id="required"
                         onCheckedChange={(value) => {
-                          console.log(value)
                           formik.setFieldValue(
                             `fields.${index}.required`,
                             value,
