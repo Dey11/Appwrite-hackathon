@@ -253,40 +253,23 @@ class DatabaseService {
       [key: string]: any
     },
     projectId: string,
-    componentId: string,
   ): Promise<DbResponse<FeedbackDocument>> {
     try {
-      const currentUser = await this.getCurrentUser()
-      if (!currentUser.success) {
-        throw new Error(currentUser.message)
+      const project = await this.findProjectById(projectId)
+      if (!project.success) {
+        throw new Error(project.message)
       }
-      const userId = currentUser.payload.$id
+
+      const userId = project.payload.userId
 
       const response: FeedbackDocument = await this.databases.createDocument(
         process.env.NEXT_PUBLIC_DATABASE_ID ?? "",
         collectionId.feedback,
         ID.unique(),
         {
-          componentId,
           data: JSON.stringify(data),
-        },
-      )
-
-      const updateProject = await this.databases.updateDocument(
-        process.env.NEXT_PUBLIC_DATABASE_ID ?? "",
-        collectionId.project,
-        projectId,
-        {
-          feedback: response.$id,
-        },
-      )
-
-      const updateUser = await this.databases.updateDocument(
-        process.env.NEXT_PUBLIC_DATABASE_ID ?? "",
-        collectionId.user,
-        userId,
-        {
-          feedback: [...currentUser.payload.feedback, response.$id],
+          user: userId,
+          project: projectId,
         },
       )
 
@@ -298,6 +281,16 @@ class DatabaseService {
     } catch (error) {
       return this.handleError(error)
     }
+  }
+
+  // get all feedback by project id
+  async getAllFeedback(projectId: string) {
+    const feedback = await this.databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID ?? "",
+      collectionId.project,
+      projectId,
+    )
+    console.log(feedback)
   }
 
   // update any document

@@ -63,12 +63,12 @@ export default function FormSettingsCard({
         </div>
         <div className="space-y-4">
           <Label>Form Style</Label>
-          <Tabs defaultValue="gradients" className="w-full">
+          <Tabs defaultValue={projectData.style.type} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="gradients">Gradients</TabsTrigger>
-              <TabsTrigger value="images">Images</TabsTrigger>
+              <TabsTrigger value="gradient">Gradients</TabsTrigger>
+              <TabsTrigger value="image">Images</TabsTrigger>
             </TabsList>
-            <TabsContent value="gradients">
+            <TabsContent value="gradient">
               <RadioGroup
                 value={
                   projectData.style.type === "gradient"
@@ -104,7 +104,7 @@ export default function FormSettingsCard({
                 ))}
               </RadioGroup>
             </TabsContent>
-            <TabsContent value="images">
+            <TabsContent value="image">
               <RadioGroup
                 value={
                   projectData.style.type === "image"
