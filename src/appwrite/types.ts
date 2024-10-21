@@ -46,7 +46,6 @@ interface ProjectProperties {
 }
 
 interface FeedbackProperties {
-  componentId: string
   data: string
   user: UserDocument
   project: ProjectDocument

@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Copy } from "lucide-react"
+import Link from "next/link"
 
 interface ProjectDetailsCardProps {
   projectId: string
@@ -21,6 +22,7 @@ interface ProjectDetailsCardProps {
   onSaveChanges: () => void
   valid: boolean
   submitting: boolean
+  hasChanges: boolean
 }
 
 export default function ProjectDetailsCard({
@@ -32,6 +34,7 @@ export default function ProjectDetailsCard({
   onSaveChanges,
   valid,
   submitting,
+  hasChanges,
 }: ProjectDetailsCardProps) {
   return (
     <Card>
@@ -71,6 +74,51 @@ export default function ProjectDetailsCard({
             </Button>
           </div>
         </div>
+        <div>
+          {isLive ? (
+            <div className="flex items-center justify-between">
+              <Label>Preview url</Label>
+              <div className="flex items-center gap-2">
+                <Link href={`http://localhost:3000/preview/${projectId}`}>
+                  <Button
+                    className={`w-full border bg-transparent text-white hover:bg-transparent hover:underline`}
+                  >{`http://localhost:3000/preview/${projectId}`}</Button>
+                </Link>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() =>
+                    copyToClipboard(
+                      `http://localhost:3000/preview/${projectId}`,
+                    )
+                  }
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <Label>Preview url</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  className={`border bg-transparent text-zinc-500 hover:bg-transparent`}
+                >{`http://localhost:3000/preview/${projectId}`}</Button>
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() =>
+                    copyToClipboard(
+                      `http://localhost:3000/preview/${projectId}`,
+                    )
+                  }
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
         <div className="flex items-center justify-between">
           <Label>Form Status</Label>
           <div className="flex items-center gap-2">
@@ -78,9 +126,13 @@ export default function ProjectDetailsCard({
             <span>Live</span>
           </div>
         </div>
+
         <div className="flex flex-col gap-4">
-          <Button onClick={onSaveChanges} disabled={!valid || submitting}>
-            Save Changes
+          <Button
+            onClick={onSaveChanges}
+            disabled={!valid || submitting || !hasChanges}
+          >
+            {submitting ? "Saving..." : "Save Changes"}
           </Button>
           <Button>Export as component</Button>
         </div>
