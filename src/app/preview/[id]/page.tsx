@@ -1,47 +1,11 @@
-"use client"
 import React, { useEffect, useState } from "react"
-import dbService from "@/appwrite/db"
 import FeedbackForm from "@/components/FeedbackForm"
-import { FormField, ProjectData } from "@/app/projects/[id]/page"
-import { useParams } from "next/navigation"
 
-const PreviewPage = () => {
-  const { id }: { id: string } = useParams()
-  const [projectData, setProjectData] = useState<ProjectData>({
-    name: "",
-    description: "",
-    style: {
-      type: "image",
-      value: "/sunny.webp",
-    },
-    fields: [],
-    live: false,
-  })
-  const [loading, setLoading] = useState(true)
-  useEffect(() => {
-    async function getProjectData() {
-      const project = await dbService.findProjectById(id)
-      if (project.success) {
-        const fields = JSON.parse(project.payload.fields).map(
-          (field: Omit<FormField, "id">, index: number) => ({
-            id: (index + 1).toString(), // Add sequential id
-            ...field,
-          }),
-        )
-        const projectData = {
-          name: project.payload.name,
-          description: project.payload.description,
-          style: JSON.parse(project.payload.image),
-          fields: fields,
-          live: project.payload.live,
-        }
-        setProjectData(projectData)
-        setLoading(false)
-      }
-    }
-    getProjectData()
-  }, [])
-  if (loading) {
+const PreviewPage = async ({ params }: { params: { id: string } }) => {
+  const res = await fetch(`http://localhost:3000/api/preview/${params.id}`)
+  const project = await res.json()
+
+  if (!project.success) {
     return (
       <div className="min-h-screen p-4 md:p-8">
         <div className="mx-auto max-w-3xl">
@@ -54,7 +18,7 @@ const PreviewPage = () => {
             <div className="relative">
               <main className="flex min-h-[600px] flex-col gap-6 rounded-xl border">
                 <div className="mx-auto my-auto">
-                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#FE8888] border-t-transparent" />
+                  <div>Document with the requested ID could not be found.</div>
                 </div>
               </main>
             </div>
@@ -63,6 +27,8 @@ const PreviewPage = () => {
       </div>
     )
   }
+
+  const projectData = project.payload
 
   if (!projectData.live) {
     return (

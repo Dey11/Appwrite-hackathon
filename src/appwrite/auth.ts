@@ -61,11 +61,13 @@ class AuthService {
 
   async OAuthLogin(provider: OAuthProvider): Promise<AuthResponse<void>> {
     try {
-      await this.account.createOAuth2Session(
+      const res = await this.account.createOAuth2Session(
         provider,
         `${process.env.NEXT_PUBLIC_APP_URL}/projects`,
         process.env.NEXT_PUBLIC_APP_URL ?? "",
       )
+      console.log(res)
+
       return { success: true, message: "Success", payload: undefined }
     } catch (error) {
       return this.handleError(error)

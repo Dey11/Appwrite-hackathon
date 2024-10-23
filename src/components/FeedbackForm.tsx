@@ -21,7 +21,6 @@ import dbservice from "@/appwrite/db"
 import { useParams } from "next/navigation"
 
 interface FormField {
-  id: string
   name: string
   type: "string" | "number" | "email" | "textarea" | "stars"
   required: boolean
@@ -254,7 +253,7 @@ export default function FeedbackForm({ projectData }: PreviewCardProps) {
         <CardContent>
           <form onSubmit={formik.handleSubmit} className="space-y-6 text-black">
             {projectData.fields.map((field) => (
-              <div key={field.id} className="space-y-2">
+              <div key={field.name} className="space-y-2">
                 <Label className="text-white">
                   {field.name}
                   {field.required && (
