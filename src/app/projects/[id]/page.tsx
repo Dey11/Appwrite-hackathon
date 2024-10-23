@@ -114,6 +114,8 @@ export default function ProjectFormBuilder() {
   const [initialFormValues, setInitialFormValues] =
     useState<ProjectFormValues | null>(null)
 
+  const [error, setError] = useState("")
+
   const formik = useFormik<ProjectFormValues>({
     initialValues: {
       name: "",
@@ -163,7 +165,6 @@ export default function ProjectFormBuilder() {
         setIsLoading(true)
         const project = await dbService.findProjectById(id)
         const user = await dbService.getCurrentUser()
-
         if (project.success && user.success) {
           setMaxFieldLimit(user.payload.maxFields)
 
@@ -192,6 +193,8 @@ export default function ProjectFormBuilder() {
           })
           formik.setValues(projectObject)
           setInitialFormValues(projectObject)
+        } else {
+          setError(project.message)
         }
       } catch (error) {
         console.error("Error fetching data:", error)
@@ -261,6 +264,24 @@ export default function ProjectFormBuilder() {
           <div className="flex h-96 items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#FE8888] border-t-transparent" />
           </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (error != "") {
+    return (
+      <div className="mt-36 px-4 sm:px-6 md:px-20">
+        <div className="mb-8">
+          <h1 className="bg-gradient-to-bl from-[#FF555F] to-[#FE8888] bg-clip-text py-2 text-center text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl">
+            Form Builder
+          </h1>
+          <p className="text-center text-xs text-zinc-400 sm:text-sm">
+            Customize your feedback form
+          </p>
+        </div>
+        <main className="flex flex-col gap-6">
+          <div className="flex h-96 items-center justify-center">{error}</div>
         </main>
       </div>
     )
