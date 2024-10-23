@@ -71,10 +71,9 @@ const Page = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true)
-        const [user, userProject] = await Promise.all([
-          dbService.getCurrentUser(),
-          dbService.getAllProjects(),
-        ])
+
+        const user = await dbService.getCurrentUser()
+        const userProject = await dbService.getAllProjects()
 
         if (user.success && userProject.success) {
           const formattedProjects = userProject.payload.map((project) => ({
