@@ -8,8 +8,10 @@ import { Star, Calendar, Mail, Hash, AlignLeft, Check, X } from "lucide-react"
 import { motion } from "framer-motion"
 import { ProjectDocument } from "@/appwrite/types"
 import { FormField } from "@/app/projects/[id]/page"
+import { useParams } from "next/navigation"
 
 const FeedbackListing = () => {
+  const { id }: { id: string } = useParams()
   const [projectData, setProjectData] = useState<ProjectDocument | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -17,7 +19,7 @@ const FeedbackListing = () => {
     async function getFeedback() {
       try {
         setIsLoading(true)
-        const feedback = await dbService.findProjectById("6716534700181549ea75")
+        const feedback = await dbService.findProjectById(id)
         if (feedback.success) {
           setProjectData({
             ...feedback.payload,
@@ -186,9 +188,6 @@ const FeedbackListing = () => {
                       </div>
                     ))}
                   </div>
-                  <p className="mt-4 text-xs italic text-zinc-500">
-                    Submitted by: {item.user.email}
-                  </p>
                 </CardContent>
               </Card>
             </motion.div>
