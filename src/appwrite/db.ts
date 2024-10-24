@@ -150,6 +150,7 @@ class DatabaseService {
   ): Promise<DbResponse<ProjectDocument>> {
     try {
       const currentUser = await this.getCurrentUser()
+
       if (!currentUser.success) {
         throw new Error(currentUser.message)
       }

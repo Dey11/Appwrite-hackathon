@@ -140,7 +140,16 @@ export default function ${formSchema.payload.name.charAt(0).toUpperCase() + form
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        // Replace this with your actual submission logic
+        await fetch(\`http://localhost:3000/api/feedback/${id}\`,{
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              secret: process.env.NEXT_PUBLIC_PROJECT_SECRET,
+              data: values,
+            }),
+          })
         console.log('Form submitted with values:', values)
         resetForm()
       } catch (error) {
@@ -230,6 +239,7 @@ export default function ${formSchema.payload.name.charAt(0).toUpperCase() + form
   )
 
   return (
+  <div className="max-w-[800px] mx-auto">
     <Card
       className="overflow-hidden border border-zinc-700"
       style={
@@ -273,6 +283,7 @@ export default function ${formSchema.payload.name.charAt(0).toUpperCase() + form
         </CardContent>
       </div>
     </Card>
+    </div>
   )
 }
 `
