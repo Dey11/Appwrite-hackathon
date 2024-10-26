@@ -74,6 +74,7 @@ const Page = () => {
 
         const user = await dbService.getCurrentUser()
         const userProject = await dbService.getAllProjects()
+        console.log(userProject)
 
         if (user.success && userProject.success) {
           const formattedProjects = userProject.payload.map((project) => ({

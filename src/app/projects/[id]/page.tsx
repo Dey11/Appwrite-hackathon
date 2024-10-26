@@ -85,20 +85,26 @@ export const BACKGROUND_STYLES = {
     {
       id: "sunny vibes",
       name: "sunny vibes",
-      value: "/sunny.jpg",
-      preview: "/sunny.jpg",
+      value:
+        "https://cloud.appwrite.io/v1/storage/buckets/671a57170033088539ab/files/671a5799001ca4f9b59a/view?project=670fed73000836fa0cf1&project=670fed73000836fa0cf1&mode=admin",
+      preview:
+        "https://cloud.appwrite.io/v1/storage/buckets/671a57170033088539ab/files/671a5799001ca4f9b59a/view?project=670fed73000836fa0cf1&project=670fed73000836fa0cf1&mode=admin",
     },
     {
       id: "forest vibes",
       name: "forest vibes",
-      value: "/forest.jpg",
-      preview: "/forest.jpg",
+      value:
+        "https://cloud.appwrite.io/v1/storage/buckets/671a57170033088539ab/files/671a579f001f6b08f3ee/view?project=670fed73000836fa0cf1&project=670fed73000836fa0cf1&mode=admin",
+      preview:
+        "https://cloud.appwrite.io/v1/storage/buckets/671a57170033088539ab/files/671a579f001f6b08f3ee/view?project=670fed73000836fa0cf1&project=670fed73000836fa0cf1&mode=admin",
     },
     {
       id: "graphitti",
       name: "graphitti Shapes",
-      value: "/leaves.png",
-      preview: "/leaves.png",
+      value:
+        "https://cloud.appwrite.io/v1/storage/buckets/671a57170033088539ab/files/671a573b0023b9ff9396/view?project=670fed73000836fa0cf1&project=670fed73000836fa0cf1&mode=admin",
+      preview:
+        "https://cloud.appwrite.io/v1/storage/buckets/671a57170033088539ab/files/671a573b0023b9ff9396/view?project=670fed73000836fa0cf1&project=670fed73000836fa0cf1&mode=admin",
     },
   ],
 }
