@@ -6,20 +6,20 @@ import { Button } from "./ui/button"
 import { Menu, X } from "lucide-react"
 import authService from "@/appwrite/auth"
 import { usePathname } from "next/navigation"
+import { useStore } from "@/lib/store"
 
 const Navbar = () => {
   const path = usePathname()
-  if (path == "/login" || path == "/signup" || path.includes("/preview")) {
-    return null
-  }
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [user, setUser] = useState<string | null>(null)
+  // const [user, setUser] = useState<string | null>(null)
+  const { authState, updateAuthState } = useStore()
 
   const navLinks = [
-    { href: "/components", label: "Components" },
-    { href: "/library", label: "Library" },
-    { href: "/community", label: "Community" },
-    { href: "/customers", label: "Customers" },
+    { href: "/get-started", label: "Get Started" },
+    { href: "/projects", label: "Projects" },
+    { href: "/support", label: "Support" },
+    { href: "/about-us", label: "About Us" },
   ]
 
   const toggleMenu = () => {
@@ -30,13 +30,20 @@ const Navbar = () => {
     async function getUser() {
       const session = await authService.getSession()
       if (!session.success) {
-        setUser(null)
+        updateAuthState(null)
+        // setUser(null)
       } else {
-        setUser(session.payload.$id)
+        updateAuthState(session.payload.$id)
+        // setUser(session.payload.$id)
       }
     }
     getUser()
-  }, [])
+    console.log(authState, "authState in navbar")
+  }, [updateAuthState, authState])
+
+  if (path == "/login" || path == "/signup" || path.includes("/preview")) {
+    return null
+  }
 
   return (
     <nav className="fixed z-50 mt-5 w-full px-4 py-2 md:px-0">
@@ -54,12 +61,13 @@ const Navbar = () => {
           ))}
         </div>
         <div className="hidden md:block">
-          {user != null ? (
+          {authState != null ? (
             <Button
               className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]"
               onClick={() => {
                 authService.logout()
-                setUser(null)
+                updateAuthState(null)
+                // setUser(null)
               }}
             >
               Log Out
@@ -92,7 +100,7 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          {user != null ? (
+          {authState != null ? (
             <Button
               className="h-7 rounded-3xl bg-[#2F2F2F] text-white hover:bg-[#FE8888]"
               onClick={() => {

@@ -8,12 +8,24 @@ import { Star, Calendar, Mail, Hash, AlignLeft, Check, X } from "lucide-react"
 import { motion } from "framer-motion"
 import { ProjectDocument } from "@/appwrite/types"
 import { FormField } from "@/app/projects/[id]/page"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
+import { useCheckSession } from "@/components/hooks/check-session"
+import { useStore } from "@/lib/store"
 
 const FeedbackListing = () => {
   const { id }: { id: string } = useParams()
   const [projectData, setProjectData] = useState<ProjectDocument | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const { user, loading } = useCheckSession()
+  const { authState } = useStore()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loading && authState == null) {
+      router.push("/login")
+    }
+  }, [user, loading, authState])
 
   useEffect(() => {
     async function getFeedback() {

@@ -8,9 +8,10 @@ import { Separator } from "@/components/ui/separator"
 import authService from "@/appwrite/auth"
 import { OAuthProvider } from "appwrite"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useCheckSession } from "./hooks/check-session"
+import Loading from "./Loading"
 
 const AuthComponent = ({ path }: { path: string }) => {
   const [email, setEmail] = useState("")
@@ -18,12 +19,21 @@ const AuthComponent = ({ path }: { path: string }) => {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
   const router = useRouter()
 
-  const { user } = useCheckSession()
-  if (user != null) {
-    router.push("/")
+  const { user, loading } = useCheckSession()
+
+  useEffect(() => {
+    if (user && !loading) {
+      setIsRedirecting(true)
+      router.push("/")
+    }
+  }, [user, loading, router])
+
+  if (loading || isRedirecting) {
+    return <Loading />
   }
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -48,7 +58,7 @@ const AuthComponent = ({ path }: { path: string }) => {
           setError(response.message)
           return
         }
-        router.push("/dashboard")
+        router.push("/projects")
         return
       } else {
         const response = await authService.signUpWithEmail(email, password)
