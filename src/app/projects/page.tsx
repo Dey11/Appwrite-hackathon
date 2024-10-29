@@ -1,10 +1,18 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import Link from "next/link"
 import AddProjectDialog from "@/components/AddProjectDialog"
 import dbService from "@/appwrite/db"
 import { useEffect, useState, useMemo, memo } from "react"
+import { Badge, Eye, MessageSquare } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 type Projects = {
   id: string
@@ -44,16 +52,30 @@ const LiveStatusIndicator = memo(({ isLive }: { isLive: boolean }) => (
 LiveStatusIndicator.displayName = "LiveStatusIndicator"
 
 const ProjectCard = memo(({ project }: { project: Projects }) => (
-  <Link href={`/projects/${project.id}`}>
-    <Card className="border border-zinc-700 bg-zinc-900 transition-transform hover:scale-[1.02]">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>{project.name}</CardTitle>
+  <Link href={`/projects/${project.id}`} className="block">
+    <Card className="h-full border border-zinc-700 bg-zinc-900 transition-all hover:border-zinc-500 hover:shadow-lg">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-lg font-medium">{project.name}</CardTitle>
         <LiveStatusIndicator isLive={project.live} />
       </CardHeader>
       <CardContent>
-        <p className="text-2xl font-semibold">{project.count}</p>
-        <p className="text-muted-foreground">Responses</p>
+        <div className="mt-2 flex items-center space-x-1 text-2xl font-semibold">
+          <MessageSquare className="h-5 w-5 text-muted-foreground" />
+          <span>{project.count}</span>
+        </div>
+        <p className="text-xs text-muted-foreground">Total Responses</p>
       </CardContent>
+      <CardFooter className="justify-between">
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/response/${project.id}`}>View Responses</Link>
+        </Button>
+        <Button variant="ghost" size="sm" asChild>
+          <Link href={`/preview/${project.id}`}>
+            <Eye className="mr-2 h-4 w-4" />
+            Preview
+          </Link>
+        </Button>
+      </CardFooter>
     </Card>
   </Link>
 ))
