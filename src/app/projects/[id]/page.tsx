@@ -1,17 +1,12 @@
 "use client"
-import FormFieldsCard from "@/components/FormFieldsCard"
-import FormSettingsCard from "@/components/FormDetailsCard"
-import PreviewCard from "@/components/PreviewCard"
-import ProjectDetailsCard from "@/components/ProjectDetailsCard"
 import React, { useCallback, useEffect, useState } from "react"
-import dbService from "@/appwrite/db"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { z } from "zod"
 import { toFormikValidationSchema } from "zod-formik-adapter"
 import { useFormik } from "formik"
-import { Collection } from "@/appwrite/types"
 import isEqual from "lodash/isEqual"
+import { Star, Code, ArrowRight, Layout } from "lucide-react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,8 +15,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import FormFieldsCard from "@/components/FormFieldsCard"
+import FormSettingsCard from "@/components/FormDetailsCard"
+import PreviewCard from "@/components/PreviewCard"
+import ProjectDetailsCard from "@/components/ProjectDetailsCard"
 import { useCheckSession } from "@/components/hooks/check-session"
 import { useStore } from "@/lib/store"
+import dbService from "@/appwrite/db"
+import { Collection } from "@/appwrite/types"
 
 const projectSchema = z.object({
   name: z.string().min(1, "Project name is required"),
@@ -139,7 +140,6 @@ export default function ProjectFormBuilder() {
     validationSchema: toFormikValidationSchema(projectSchema),
     onSubmit: async (values) => {
       try {
-        // update db call here
         const updatedProject = await dbService.updateDocument(
           Collection.project,
           id,
@@ -269,102 +269,146 @@ export default function ProjectFormBuilder() {
 
   if (isLoading) {
     return (
-      <div className="mt-36 px-4 sm:px-6 md:px-20">
-        <div className="mb-8">
-          <h1 className="bg-gradient-to-bl from-[#FF555F] to-[#FE8888] bg-clip-text py-2 text-center text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl">
-            Form Builder
-          </h1>
-          <p className="text-center text-xs text-zinc-400 sm:text-sm">
-            Customize your feedback form
-          </p>
-        </div>
-        <main className="flex flex-col gap-6">
+      <div className="bg-zinc-950 text-white">
+        <div className="container mx-auto px-4 py-24">
+          <div className="mb-8 text-center">
+            <div className="mb-4 flex items-center justify-center gap-2 text-sm text-[#FE8888]">
+              <Layout className="h-4 w-4" />
+              <span>Form Builder</span>
+            </div>
+            <h1 className="font-poppins text-4xl font-bold text-white sm:text-5xl">
+              Customize Your{" "}
+              <span className="bg-gradient-to-r from-[#FF555F] to-[#FE8888] bg-clip-text text-transparent">
+                Form
+              </span>
+            </h1>
+          </div>
           <div className="flex h-96 items-center justify-center">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#FE8888] border-t-transparent" />
           </div>
-        </main>
+        </div>
       </div>
     )
   }
 
-  if (error != "") {
+  if (error) {
     return (
-      <div className="mt-36 px-4 sm:px-6 md:px-20">
-        <div className="mb-8">
-          <h1 className="bg-gradient-to-bl from-[#FF555F] to-[#FE8888] bg-clip-text py-2 text-center text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl">
-            Form Builder
-          </h1>
-          <p className="text-center text-xs text-zinc-400 sm:text-sm">
-            Customize your feedback form
-          </p>
+      <div className="bg-zinc-950 text-white">
+        <div className="container mx-auto px-4 py-24">
+          <div className="mb-8 text-center">
+            <div className="mb-4 flex items-center justify-center gap-2 text-sm text-[#FE8888]">
+              <Code className="h-4 w-4" />
+              <span>Error</span>
+            </div>
+            <h1 className="font-poppins text-4xl font-bold text-white sm:text-5xl">
+              Something Went{" "}
+              <span className="bg-gradient-to-r from-[#FF555F] to-[#FE8888] bg-clip-text text-transparent">
+                Wrong
+              </span>
+            </h1>
+          </div>
+          <div className="flex h-96 items-center justify-center text-zinc-400">
+            {error}
+          </div>
         </div>
-        <main className="flex flex-col gap-6">
-          <div className="flex h-96 items-center justify-center">{error}</div>
-        </main>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto mt-36 max-w-7xl p-6">
-      <div className="mb-8">
-        <h1 className="bg-gradient-to-bl from-[#FF555F] to-[#FE8888] bg-clip-text py-2 text-center text-3xl font-semibold text-transparent sm:text-4xl md:text-5xl">
-          Form Builder
-        </h1>
-        <p className="text-center text-xs text-zinc-400 sm:text-sm">
-          Customize your feedback form
-        </p>
-        <div className="mt-10">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Rroist</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/projects">Projects</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{id}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
+    <div className="min-h-screen bg-zinc-950 text-white">
+      <div className="container mx-auto px-4 py-24">
+        {/* Header Section */}
+        <div className="mb-16 text-center">
+          <div className="mb-4 flex items-center justify-center gap-2 text-sm text-[#FE8888]">
+            <Star className="h-4 w-4" />
+            <span>Form Builder</span>
+          </div>
+          <h1 className="mb-6 font-poppins text-4xl font-bold text-white sm:text-5xl">
+            Build Your{" "}
+            <span className="bg-gradient-to-r from-[#FF555F] to-[#FE8888] bg-clip-text text-transparent">
+              Perfect Form
+            </span>
+          </h1>
+          <p className="mx-auto max-w-2xl text-zinc-400">
+            Customize every aspect of your feedback form with our intuitive
+            builder. Create fields, style your form, and preview in real-time.
+          </p>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="space-y-6">
-          <FormSettingsCard
-            projectData={formik.values}
-            setProjectData={(newData) => formik.setValues(newData)}
-            errors={formik.errors}
-          />
-          <FormFieldsCard
-            reorderFields={reorderFields}
-            projectData={formik.values}
-            addField={addField}
-            deleteField={deleteField}
-            updateField={updateField}
-            errors={formik.errors}
-            maxFieldLimit={maxFieldLimit}
-          />
+          {/* Breadcrumb with matching style */}
+          <div className="mt-8">
+            <Breadcrumb>
+              <BreadcrumbList className="text-zinc-400">
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href="/"
+                    className="text-[#FE8888] hover:text-[#FF555F]"
+                  >
+                    Roist
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href="/projects"
+                    className="text-[#FE8888] hover:text-[#FF555F]"
+                  >
+                    Projects
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{id}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         </div>
-        <div className="space-y-6">
-          <ProjectDetailsCard
-            projectId={projectDetails.projectId}
-            secretKey={projectDetails.secretKey}
-            isLive={formik.values.live}
-            setIsLive={() => {
-              formik.setFieldValue("live", !formik.values.live)
-            }}
-            copyToClipboard={copyToClipboard}
-            onSaveChanges={() => formik.handleSubmit()}
-            valid={formik.isValid}
-            submitting={formik.isSubmitting}
-            hasChanges={hasChanges()}
-          />
-          <PreviewCard projectData={formik.values} />
+
+        {/* Main Content Grid */}
+        <div className="relative">
+          {/* Decorative gradient backgrounds */}
+          <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#FE8888]/20 blur-3xl" />
+          <div className="absolute -bottom-20 -right-10 h-72 w-72 rounded-full bg-[#FF555F]/20 blur-3xl" />
+
+          {/* Content Grid */}
+          <div className="relative grid gap-8 lg:grid-cols-2">
+            {/* Left Column */}
+            <div className="space-y-6">
+              <FormSettingsCard
+                projectData={formik.values}
+                setProjectData={(newData) => formik.setValues(newData)}
+                errors={formik.errors}
+              />
+              <FormFieldsCard
+                reorderFields={reorderFields}
+                projectData={formik.values}
+                addField={addField}
+                deleteField={deleteField}
+                updateField={updateField}
+                errors={formik.errors}
+                maxFieldLimit={maxFieldLimit}
+              />
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-6">
+              <ProjectDetailsCard
+                projectId={projectDetails.projectId}
+                secretKey={projectDetails.secretKey}
+                isLive={formik.values.live}
+                setIsLive={() =>
+                  formik.setFieldValue("live", !formik.values.live)
+                }
+                copyToClipboard={copyToClipboard}
+                onSaveChanges={() => formik.handleSubmit()}
+                valid={formik.isValid}
+                submitting={formik.isSubmitting}
+                hasChanges={hasChanges()}
+              />
+              <PreviewCard projectData={formik.values} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

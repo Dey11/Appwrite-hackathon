@@ -22,7 +22,6 @@ const AuthComponent = ({ path }: { path: string }) => {
   const [isRedirecting, setIsRedirecting] = useState(false)
 
   const router = useRouter()
-
   const { user, loading } = useCheckSession()
 
   useEffect(() => {
@@ -77,131 +76,115 @@ const AuthComponent = ({ path }: { path: string }) => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#131415] md:flex md:bg-gradient-to-r md:from-[#FE8888] md:to-[#FE8888]/80">
-      <div className="bg-[#FE8888] px-6 py-8 md:flex md:flex-1 md:flex-col md:justify-center md:px-4 lg:px-8">
-        <div className="mx-auto max-w-md text-center md:text-left">
-          <h1 className="mb-2 text-3xl font-bold text-black md:text-4xl">
-            Rroist
-          </h1>
-          <p className="text-lg text-black md:text-xl">
-            Hey there, Welcome to Rroist.
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen w-full bg-zinc-950">
+      <div className="container mx-auto flex min-h-screen flex-col items-center justify-center px-4">
+        <div className="relative w-full max-w-md">
+          <div className="absolute -left-8 -top-8 h-72 w-72 rounded-full bg-[#FE8888]/20 blur-3xl" />
+          <div className="absolute -bottom-8 -right-8 h-72 w-72 rounded-full bg-[#FF555F]/20 blur-3xl" />
 
-      <div className="flex flex-1 items-center justify-center px-4 py-8 md:bg-[#131415] md:px-6 lg:px-8">
-        <Card className="w-full max-w-md border-none bg-transparent shadow-none">
-          <CardHeader>
-            <CardTitle className="mb-6 text-center text-xl font-semibold text-[#FE8888] md:mb-8 md:text-left md:text-2xl">
-              {path == "/login" ? "Login in to Rroist" : "Sign up to Rroist"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <Card className="relative z-10 border-zinc-800 bg-zinc-900/50 shadow-2xl">
+            <CardHeader className="space-y-3">
+              <CardTitle className="text-center text-2xl font-bold text-white">
+                {path === "/login" ? "Welcome back" : "Create an account"}
+              </CardTitle>
+              <p className="text-center text-sm text-zinc-400">
+                {path === "/login"
+                  ? "Sign in to continue building amazing forms"
+                  : "Start creating stunning feedback forms today"}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-6">
               {/* OAuth Buttons */}
-              <Button
-                variant="outline"
-                className="h-11 w-full border border-zinc-700 bg-transparent text-white hover:bg-zinc-800"
-                onClick={() => {
-                  authService.OAuthLogin(OAuthProvider.Google)
-                }}
-              >
-                <img
-                  src="https://www.google.com/favicon.ico"
-                  alt="Google"
-                  className="mr-2 h-5 w-5"
-                />
-                <span className="text-sm md:text-base">
-                  Login in with Google
-                </span>
-              </Button>
+              <div className="space-y-3">
+                <Button
+                  variant="outline"
+                  className="h-11 w-full border-zinc-700 bg-zinc-900/50 text-white hover:bg-zinc-800"
+                  onClick={() => authService.OAuthLogin(OAuthProvider.Google)}
+                >
+                  <img
+                    src="https://www.google.com/favicon.ico"
+                    alt="Google"
+                    className="mr-2 h-5 w-5"
+                  />
+                  Continue with Google
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-11 w-full border-zinc-700 bg-zinc-900/50 text-white hover:bg-zinc-800"
+                  onClick={() => authService.OAuthLogin(OAuthProvider.Github)}
+                >
+                  <Github className="mr-2 h-5 w-5" />
+                  Continue with GitHub
+                </Button>
+              </div>
 
-              <Button
-                variant="outline"
-                className="h-11 w-full border border-zinc-700 bg-transparent text-white hover:bg-zinc-800"
-                onClick={() => {
-                  authService.OAuthLogin(OAuthProvider.Github)
-                }}
-              >
-                <Github className="mr-2 h-5 w-5" />
-                <span className="text-sm md:text-base">
-                  Login in with Github
-                </span>
-              </Button>
-
-              {/* Separator */}
-              <div className="relative my-6">
-                <Separator className="bg-zinc-700" />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform bg-[#2F2F2F] px-2 text-sm text-zinc-400">
-                  OR
+              <div className="relative">
+                <Separator className="bg-zinc-800" />
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-900 px-2 text-sm text-zinc-500">
+                  or
                 </span>
               </div>
 
-              {/* Email/Password Form */}
               <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <Input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Email address"
                   value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setEmail(e.target.value)
-                  }
-                  className="h-11 border border-zinc-700 bg-transparent text-white placeholder:text-sm focus:border-[#FE8888] focus:ring-[#FE8888] md:placeholder:text-base"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="h-11 border-zinc-700 bg-zinc-900/50 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
                 />
                 <Input
                   type="password"
-                  placeholder="Enter a password"
+                  placeholder="Password"
                   value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPassword(e.target.value)
-                  }
-                  className="h-11 border border-zinc-700 bg-transparent text-white placeholder:text-sm focus:border-[#FE8888] focus:ring-[#FE8888] md:placeholder:text-base"
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 border-zinc-700 bg-zinc-900/50 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
                 />
                 <Button
                   type="submit"
-                  className="h-11 w-full bg-white text-black hover:bg-gray-100"
                   disabled={isLoading}
+                  className="h-11 w-full bg-gradient-to-r from-[#FF555F] to-[#FE8888] text-white hover:from-[#FF555F]/90 hover:to-[#FE8888]/90"
                 >
-                  <span className="text-sm md:text-base">
-                    {path == "/login" ? "Log in" : "Sign up"}
-                  </span>
+                  {isLoading
+                    ? "Processing..."
+                    : path === "/login"
+                      ? "Sign in"
+                      : "Create account"}
                 </Button>
+
                 {error && (
-                  <p className="mt-2 text-center text-sm text-red-500">
-                    {error}
-                  </p>
+                  <p className="text-center text-sm text-red-500">{error}</p>
                 )}
                 {success && (
-                  <p className="mt-2 text-center text-sm text-green-500">
+                  <p className="text-center text-sm text-green-500">
                     {success}
                   </p>
                 )}
               </form>
 
-              {/* Forgot Password Link */}
-              {path == "/login" ? (
+              {path === "/login" && (
                 <Button
                   variant="link"
-                  className="mt-2 w-full text-sm text-zinc-400 hover:text-[#FE8888] md:text-base"
+                  className="w-full text-sm text-zinc-400 hover:text-[#FE8888]"
                 >
-                  Forgot Password?
+                  Forgot your password?
                 </Button>
-              ) : null}
+              )}
 
-              <p className="w-full text-center text-sm text-zinc-400 hover:text-[#FE8888] md:text-base">
-                {path == "/login"
+              <p className="text-center text-sm text-zinc-400">
+                {path === "/login"
                   ? "Don't have an account? "
                   : "Already have an account? "}
                 <Link
-                  href={path == "/login" ? "/signup" : "/login"}
-                  className="hover:underline"
+                  href={path === "/login" ? "/signup" : "/login"}
+                  className="text-[#FE8888] hover:underline"
                 >
-                  {path == "/login" ? "Sign up" : "Login"}
+                  {path === "/login" ? "Sign up" : "Sign in"}
                 </Link>
               </p>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
