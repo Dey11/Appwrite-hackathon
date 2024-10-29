@@ -4,10 +4,23 @@ import React, { useEffect, useState } from "react"
 import dbService from "@/appwrite/db"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Star, Calendar, Mail, Hash, AlignLeft, Check, X } from "lucide-react"
+import {
+  Star,
+  Calendar,
+  Mail,
+  Hash,
+  AlignLeft,
+  ArrowLeft,
+} from "lucide-react"
 import { motion } from "framer-motion"
 import { ProjectDocument } from "@/appwrite/types"
 import { FormField } from "@/app/projects/[id]/page"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb"
 import { useParams, useRouter } from "next/navigation"
 import { useCheckSession } from "@/components/hooks/check-session"
 import { useStore } from "@/lib/store"
@@ -147,6 +160,21 @@ const FeedbackListing = () => {
       <p className="mb-8 text-center text-xs text-zinc-400 sm:text-sm">
         {projectData.description}
       </p>
+      <div className="my-10">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href="/projects"
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="ml-1 h-4 w-4" />
+                Go back to projects
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {projectData.feedback.map((item: any, index: number) => {
           const feedbackData = parseFeedbackData(item.data)

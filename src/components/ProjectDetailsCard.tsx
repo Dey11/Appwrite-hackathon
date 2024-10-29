@@ -37,7 +37,7 @@ export default function ProjectDetailsCard({
   hasChanges,
 }: ProjectDetailsCardProps) {
   return (
-    <Card>
+    <Card className="border-zinc-800 bg-zinc-900/50 shadow-lg">
       <CardHeader>
         <CardTitle>Project Details</CardTitle>
         <CardDescription>Your project information</CardDescription>
@@ -46,11 +46,16 @@ export default function ProjectDetailsCard({
         <div className="flex items-center justify-between">
           <Label>Project ID</Label>
           <div className="flex items-center gap-2">
-            <Input value={projectId} readOnly className="w-48" />
+            <Input
+              value={projectId}
+              readOnly
+              className="mt-1.5 w-48 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
+            />
             <Button
               size="icon"
               variant="outline"
               onClick={() => copyToClipboard(projectId)}
+              className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
             >
               <Copy className="h-4 w-4" />
             </Button>
@@ -62,12 +67,13 @@ export default function ProjectDetailsCard({
             <Input
               value={secretKey}
               readOnly
-              className="w-48"
+              className="mt-1.5 w-48 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
               type="password"
             />
             <Button
               size="icon"
               variant="outline"
+              className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
               onClick={() => copyToClipboard(secretKey)}
             >
               <Copy className="h-4 w-4" />
@@ -79,7 +85,10 @@ export default function ProjectDetailsCard({
             <div className="flex items-center justify-between">
               <Label>Preview url</Label>
               <div className="flex items-center gap-2">
-                <Link href={`http://localhost:3000/preview/${projectId}`}>
+                <Link
+                  href={`http://localhost:3000/preview/${projectId}`}
+                  className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
+                >
                   <Button
                     className={`w-full border bg-transparent text-white hover:bg-transparent hover:underline`}
                   >{`http://localhost:3000/preview/${projectId}`}</Button>
@@ -92,6 +101,7 @@ export default function ProjectDetailsCard({
                       `http://localhost:3000/preview/${projectId}`,
                     )
                   }
+                  className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
                 >
                   <Copy className="h-4 w-4" />
                 </Button>
@@ -102,7 +112,7 @@ export default function ProjectDetailsCard({
               <Label>Preview url</Label>
               <div className="flex items-center gap-2">
                 <Button
-                  className={`border bg-transparent text-zinc-500 hover:bg-transparent`}
+                  className={`mt-1.5 border border-zinc-800 bg-transparent bg-zinc-900 text-zinc-500 placeholder:text-zinc-500 hover:bg-transparent focus:border-[#FE8888] focus:ring-[#FE8888]`}
                 >{`http://localhost:3000/preview/${projectId}`}</Button>
                 <Button
                   size="icon"
@@ -112,6 +122,7 @@ export default function ProjectDetailsCard({
                       `http://localhost:3000/preview/${projectId}`,
                     )
                   }
+                  className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
                 >
                   <Copy className="h-4 w-4" />
                 </Button>
@@ -123,7 +134,6 @@ export default function ProjectDetailsCard({
           <Label>Form Status</Label>
           <div className="flex items-center gap-2">
             <Switch checked={isLive} onCheckedChange={setIsLive} />
-            <span>Live</span>
           </div>
         </div>
 

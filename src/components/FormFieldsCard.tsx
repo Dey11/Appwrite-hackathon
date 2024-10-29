@@ -74,7 +74,7 @@ export default function FormFieldsCard({
   }
 
   return (
-    <Card>
+    <Card className="border-zinc-800 bg-zinc-900/50 shadow-lg">
       <CardHeader>
         <CardTitle>Form Fields</CardTitle>
         <CardDescription>Add and customize form fields</CardDescription>
@@ -133,6 +133,7 @@ export default function FormFieldsCard({
                                             name: e.target.value,
                                           })
                                         }
+                                        className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
                                       />
                                       {errors.fields &&
                                         typeof errors.fields[index] ===
@@ -154,10 +155,10 @@ export default function FormFieldsCard({
                                           updateField(field.id, { type: value })
                                         }
                                       >
-                                        <SelectTrigger>
+                                        <SelectTrigger className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]">
                                           <SelectValue />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]">
                                           <SelectItem value="string">
                                             Text
                                           </SelectItem>
@@ -188,13 +189,13 @@ export default function FormFieldsCard({
                                           required: value,
                                         })
                                       }}
+                                      className="data-[state=checked]:border-[#FE8888] data-[state=checked]:bg-[#FE8888]"
                                     />
                                     <Label htmlFor={`required-${field.id}`}>
                                       Required field
                                     </Label>
                                   </div>
                                   <Button
-                                    variant="destructive"
                                     size="sm"
                                     onClick={() => deleteField(field.id)}
                                     className="w-full"
@@ -226,7 +227,7 @@ export default function FormFieldsCard({
           className="w-full"
           disabled={projectData.fields.length >= maxFieldLimit}
         >
-          <PlusCircle className="mr-2" size={15} />
+          <PlusCircle className="mr-2 h-5 w-5 text-[#FE8888]" size={15} />
           Add field{" "}
           {projectData.fields.length >= maxFieldLimit && "(Limit reached)"}
         </Button>

@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { PlusCircle, X } from "lucide-react"
+import { Plus, PlusCircle, X } from "lucide-react"
 import { useFormik } from "formik"
 import { toFormikValidationSchema } from "zod-formik-adapter"
 import {
@@ -91,7 +91,13 @@ export default function AddProjectDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {/* <DialogTrigger asChild> */}
-      <Button onClick={handleDialogTrigger}>Add Project</Button>
+      <Button
+        onClick={handleDialogTrigger}
+        className="bg-gradient-to-r from-[#FF555F] to-[#FE8888] text-white hover:from-[#FF555F]/90 hover:to-[#FE8888]/90"
+      >
+        <Plus className="mr-2 h-4 w-4" />
+        New Project
+      </Button>
       {/* </DialogTrigger> */}
       <DialogContent className="md:max-w-[600px]">
         <DialogHeader className="px-2">

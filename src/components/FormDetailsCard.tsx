@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
+import { Image as ImageIcon, Palette } from "lucide-react"
 import Image from "next/image"
 import { BACKGROUND_STYLES, ProjectData } from "@/app/projects/[id]/page"
 import { FormikErrors } from "formik"
@@ -28,26 +29,34 @@ export default function FormSettingsCard({
   errors,
 }: FormSettingsCardProps) {
   return (
-    <Card>
+    <Card className="border-zinc-800 bg-zinc-900/50 shadow-lg">
       <CardHeader>
-        <CardTitle>Form Details</CardTitle>
-        <CardDescription>Customize your form appearance</CardDescription>
+        <div className="flex items-center gap-2">
+          <Palette className="h-5 w-5 text-[#FE8888]" />
+          <CardTitle className="text-white">Form Details</CardTitle>
+        </div>
+        <CardDescription className="text-zinc-400">
+          Customize your form appearance and style
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         <div>
-          <Label>Form Name</Label>
+          <Label className="text-zinc-300">Form Name</Label>
           <Input
             value={projectData.name}
             onChange={(e) =>
               setProjectData({ ...projectData, name: e.target.value })
             }
+            className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
+            placeholder="Enter form name..."
           />
           {errors.name && (
-            <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+            <p className="mt-1.5 text-sm text-[#FF555F]">{errors.name}</p>
           )}
         </div>
+
         <div>
-          <Label>Form Description</Label>
+          <Label className="text-zinc-300">Form Description</Label>
           <Textarea
             value={projectData.description}
             onChange={(e) =>
@@ -56,18 +65,36 @@ export default function FormSettingsCard({
                 description: e.target.value,
               })
             }
+            className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
+            placeholder="Describe your form..."
           />
           {errors.description && (
-            <p className="mt-1 text-sm text-red-500">{errors.description}</p>
+            <p className="mt-1.5 text-sm text-[#FF555F]">
+              {errors.description}
+            </p>
           )}
         </div>
+
         <div className="space-y-4">
-          <Label>Form Style</Label>
+          <Label className="text-zinc-300">Form Style</Label>
           <Tabs defaultValue={projectData.style.type} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="gradient">Gradients</TabsTrigger>
-              <TabsTrigger value="image">Images</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 border border-zinc-800 bg-zinc-900">
+              <TabsTrigger
+                value="gradient"
+                className="data-[state=active]:bg-[#FE8888] data-[state=active]:text-white"
+              >
+                <Palette className="mr-2 h-4 w-4" />
+                Gradients
+              </TabsTrigger>
+              <TabsTrigger
+                value="image"
+                className="data-[state=active]:bg-[#FE8888] data-[state=active]:text-white"
+              >
+                <ImageIcon className="mr-2 h-4 w-4" />
+                Images
+              </TabsTrigger>
             </TabsList>
+
             <TabsContent value="gradient">
               <RadioGroup
                 value={
@@ -92,18 +119,21 @@ export default function FormSettingsCard({
                     />
                     <Label
                       htmlFor={gradient.id}
-                      className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      className="flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-zinc-800 bg-zinc-900/50 p-4 transition-all hover:border-[#FE8888] hover:bg-zinc-800 peer-data-[state=checked]:border-[#FE8888] [&:has([data-state=checked])]:border-[#FE8888]"
                     >
                       <div
                         className="mb-2 h-16 w-full rounded-md"
                         style={{ background: gradient.preview }}
                       />
-                      <span className="text-sm">{gradient.name}</span>
+                      <span className="text-sm text-zinc-300">
+                        {gradient.name}
+                      </span>
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
             </TabsContent>
+
             <TabsContent value="image">
               <RadioGroup
                 value={
@@ -128,7 +158,7 @@ export default function FormSettingsCard({
                     />
                     <Label
                       htmlFor={image.id}
-                      className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      className="flex cursor-pointer flex-col items-center justify-center rounded-md border-2 border-zinc-800 bg-zinc-900/50 p-4 transition-all hover:border-[#FE8888] hover:bg-zinc-800 peer-data-[state=checked]:border-[#FE8888] [&:has([data-state=checked])]:border-[#FE8888]"
                     >
                       <div className="relative mb-2 h-16 w-full overflow-hidden rounded-md">
                         <Image
@@ -139,18 +169,21 @@ export default function FormSettingsCard({
                           className="h-full w-full object-cover"
                         />
                       </div>
-                      <span className="text-sm">{image.name}</span>
+                      <span className="text-sm text-zinc-300">
+                        {image.name}
+                      </span>
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
             </TabsContent>
-            <div className="flex justify-center">
-              <Badge className="mt-6 text-blue-600">
-                upload custom image feature is coming soon!!
-              </Badge>
-            </div>
           </Tabs>
+
+          <div className="flex justify-center">
+            <Badge className="mt-6 bg-zinc-900/80 text-[#FE8888]">
+              Custom image upload coming soon!
+            </Badge>
+          </div>
         </div>
       </CardContent>
     </Card>
