@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react"
 import FeedbackForm from "@/components/FeedbackForm"
 
 const PreviewPage = async ({ params }: { params: { id: string } }) => {
@@ -85,7 +84,6 @@ const PreviewPage = async ({ params }: { params: { id: string } }) => {
               Welcome
             </div>
 
-            {/* PreviewCard Component */}
             <FeedbackForm projectData={projectData} />
           </div>
         </div>

@@ -13,6 +13,9 @@ import dbService from "@/appwrite/db"
 import { useEffect, useState, useMemo, memo } from "react"
 import { Badge, Eye, MessageSquare } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { useCheckSession } from "@/components/hooks/check-session"
+import { useStore } from "@/lib/store"
 
 type Projects = {
   id: string
@@ -89,6 +92,16 @@ const Page = () => {
   const [projects, setProjects] = useState<Projects[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
+  const { user, loading } = useCheckSession()
+  const { authState } = useStore()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loading && authState == null) {
+      router.push("/login")
+    }
+  }, [user, loading, authState])
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -96,7 +109,6 @@ const Page = () => {
 
         const user = await dbService.getCurrentUser()
         const userProject = await dbService.getAllProjects()
-        console.log(userProject)
 
         if (user.success && userProject.success) {
           const formattedProjects = userProject.payload.map((project) => ({
@@ -120,8 +132,8 @@ const Page = () => {
       }
     }
 
-    fetchData()
-  }, [])
+    user && fetchData()
+  }, [user])
 
   const projectsGrid = useMemo(
     () => (

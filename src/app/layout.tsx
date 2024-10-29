@@ -28,19 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={` ${poppins.variable} ${quicksand.variable} `}>
-      <body className={`${poppins.className} `}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex justify-center">
-            <Navbar />
-          </div>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+      <body className={`${poppins.className} dark`}>
+        <div className="flex justify-center">
+          <Navbar />
+        </div>
+        {children}
+        <Toaster />
       </body>
     </html>
   )

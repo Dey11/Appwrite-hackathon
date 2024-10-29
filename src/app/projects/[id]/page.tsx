@@ -5,7 +5,7 @@ import PreviewCard from "@/components/PreviewCard"
 import ProjectDetailsCard from "@/components/ProjectDetailsCard"
 import React, { useCallback, useEffect, useState } from "react"
 import dbService from "@/appwrite/db"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { z } from "zod"
 import { toFormikValidationSchema } from "zod-formik-adapter"
@@ -20,6 +20,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { useCheckSession } from "@/components/hooks/check-session"
+import { useStore } from "@/lib/store"
 
 const projectSchema = z.object({
   name: z.string().min(1, "Project name is required"),
@@ -164,6 +166,16 @@ export default function ProjectFormBuilder() {
       }
     },
   })
+
+  const { user, loading } = useCheckSession()
+  const { authState } = useStore()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!loading && authState == null) {
+      router.push("/login")
+    }
+  }, [user, loading, authState])
 
   useEffect(() => {
     const fetchData = async () => {

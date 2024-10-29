@@ -14,7 +14,6 @@ import {
 import { Menu, X, User, LogOut, FolderOpen, Mail, Github } from "lucide-react"
 import authService from "@/appwrite/auth"
 import { usePathname } from "next/navigation"
-import { GitHubLogoIcon } from "@radix-ui/react-icons"
 
 export default function Navbar() {
   const path = usePathname()
@@ -69,7 +68,7 @@ export default function Navbar() {
                   <Avatar className="h-8 w-8 cursor-pointer">
                     <AvatarImage src={user.imageUrl} alt="User avatar" />
                     <AvatarFallback>
-                      {user.name.charAt(0).toUpperCase()}
+                      {user.email.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -96,7 +95,9 @@ export default function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
               <Link
-                href={"/"}
+                href={"https://github.com/Dey11/Appwrite-hackathon"}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-8 w-8 items-center justify-center rounded-full border"
               >
                 <Github className="cursor-pointer p-[1px]" />
@@ -126,11 +127,10 @@ export default function Navbar() {
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user.imageUrl} alt="User avatar" />
                   <AvatarFallback>
-                    {user.name.charAt(0).toUpperCase()}
+                    {user.email.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium">{user.name}</span>
                   <span className="text-xs text-gray-500">{user.email}</span>
                 </div>
               </div>
