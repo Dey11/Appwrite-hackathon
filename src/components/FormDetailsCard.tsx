@@ -14,8 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Image as ImageIcon, Palette } from "lucide-react"
 import Image from "next/image"
-import { BACKGROUND_STYLES, ProjectData } from "@/app/projects/[id]/page"
 import { FormikErrors } from "formik"
+import { BACKGROUND_STYLES, ProjectData } from "@/schema/project"
 
 interface FormSettingsCardProps {
   projectData: ProjectData

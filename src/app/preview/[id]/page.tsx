@@ -1,25 +1,51 @@
 import FeedbackForm from "@/components/FeedbackForm"
+import { Star } from "lucide-react"
 
 const PreviewPage = async ({ params }: { params: { id: string } }) => {
-  const res = await fetch(`http://localhost:3000/api/preview/${params.id}`)
+  const res = await fetch(`http://localhost:3000/api/preview/${params.id}`, {
+    cache: "no-cache",
+  })
   const project = await res.json()
+  console.log(project)
+
+  const HeaderSection = () => (
+    <div className="mb-12 text-center">
+      <div className="mb-4 flex items-center justify-center gap-2 text-sm text-[#FE8888]">
+        <Star className="h-4 w-4" />
+        <span>Built with Rroist</span>
+      </div>
+      <h1 className="font-poppins text-3xl font-bold text-white md:text-4xl">
+        Share Your{" "}
+        <span className="bg-gradient-to-r from-[#FF555F] to-[#FE8888] bg-clip-text text-transparent">
+          Feedback
+        </span>
+      </h1>
+      <p className="mt-3 text-zinc-400">
+        Help us improve by sharing your thoughts and experiences
+      </p>
+    </div>
+  )
 
   if (!project.success) {
     return (
-      <div className="min-h-screen p-4 md:p-8">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold">This form is build by Rroist</h1>
-            <p className="mt-2 text-zinc-500">Made with ❤️ by Rroist</p>
-          </div>
-
-          <div className="rounded-lg p-4 md:p-6">
-            <div className="relative">
-              <main className="flex min-h-[600px] flex-col gap-6 rounded-xl border">
-                <div className="mx-auto my-auto">
-                  <div>Document with the requested ID could not be found.</div>
+      <div className="relative min-h-screen bg-zinc-950 px-4 py-16 text-white">
+        <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+        <div className="relative mx-auto max-w-3xl">
+          <HeaderSection />
+          <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/50 shadow-2xl">
+            <div className="relative p-6">
+              <div className="absolute -left-32 -top-32 h-64 w-64 rounded-full bg-[#FE8888]/10 blur-3xl" />
+              <div className="absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-[#FF555F]/10 blur-3xl" />
+              <div className="relative flex min-h-[400px] items-center justify-center text-center">
+                <div className="space-y-4">
+                  <p className="text-xl text-zinc-300">
+                    Document with the requested ID could not be found.
+                  </p>
+                  <p className="text-zinc-400">
+                    Please check the URL and try again.
+                  </p>
                 </div>
-              </main>
+              </div>
             </div>
           </div>
         </div>
@@ -31,37 +57,36 @@ const PreviewPage = async ({ params }: { params: { id: string } }) => {
 
   if (!projectData.live) {
     return (
-      <div className="min-h-screen p-4 md:p-8">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold">This form is built by Rroist</h1>
-            <p className="mt-2 text-zinc-500">Made with ❤️ by Rroist</p>
-          </div>
-          <div className="rounded-lg p-4 md:p-6">
-            <div className="relative">
-              <main
-                className="flex min-h-[600px] flex-col gap-6 overflow-hidden rounded-xl"
-                style={
-                  projectData.style.type === "gradient"
-                    ? { background: projectData.style.value }
-                    : {
-                        backgroundImage: `url(${projectData.style.value})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }
-                }
-              >
-                <div className="absolute inset-0 rounded-md bg-black/40 backdrop-blur-[1px]" />
-                <div className="relative z-10 mx-auto my-auto p-6 text-center">
-                  <h3 className="mb-2 text-xl font-semibold text-white">
+      <div className="relative min-h-screen bg-zinc-950 px-4 py-16 text-white">
+        <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+        <div className="relative mx-auto max-w-3xl">
+          <HeaderSection />
+          <div
+            className="overflow-hidden rounded-xl border border-zinc-800 shadow-2xl"
+            style={
+              projectData.style.type === "gradient"
+                ? { background: projectData.style.value }
+                : {
+                    backgroundImage: `linear-gradient(to bottom, rgba(24, 24, 27, 0.8), rgba(24, 24, 27, 0.95)), url(${projectData.style.value})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }
+            }
+          >
+            <div className="relative p-6">
+              <div className="absolute -left-32 -top-32 h-64 w-64 rounded-full bg-[#FE8888]/10 blur-3xl" />
+              <div className="absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-[#FF555F]/10 blur-3xl" />
+              <div className="relative flex min-h-[400px] items-center justify-center text-center">
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-semibold text-white">
                     Feedback Collection Ended
                   </h3>
-                  <p className="text-zinc-200">
+                  <p className="text-zinc-300">
                     Thank you for your interest. The feedback collection period
                     for this project has ended.
                   </p>
                 </div>
-              </main>
+              </div>
             </div>
           </div>
         </div>
@@ -70,20 +95,17 @@ const PreviewPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold">This form is build by Rroist</h1>
-          <p className="mt-2 text-zinc-500">Made with ❤️ by Rroist</p>
-        </div>
-
-        <div className="rounded-lg p-4 md:p-6">
+    <div className="relative min-h-screen bg-zinc-950 px-4 py-16 text-white">
+      <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      <div className="relative mx-auto max-w-3xl">
+        <HeaderSection />
+        <div className="relative rounded-xl">
+          <div className="absolute -left-4 -top-4 h-32 w-32 rounded-full bg-[#FE8888]/20 blur-3xl" />
+          <div className="absolute -bottom-4 -right-4 h-32 w-32 rounded-full bg-[#FF555F]/20 blur-3xl" />
           <div className="relative">
-            {/* Preview Label */}
-            <div className="absolute -top-3 right-4 z-10 rounded-full bg-blue-500 px-3 py-1 text-sm font-medium text-white shadow-md">
+            <div className="absolute -top-3 right-4 z-10 rounded-full bg-gradient-to-r from-[#FF555F] to-[#FE8888] px-4 py-1 text-sm font-medium text-white shadow-xl">
               Welcome
             </div>
-
             <FeedbackForm projectData={projectData} />
           </div>
         </div>

@@ -1,4 +1,5 @@
 "use client"
+
 import React from "react"
 import {
   Card,
@@ -45,14 +46,14 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
           <Input
             type={field.type}
             placeholder={`Enter ${field.name.toLowerCase()}`}
-            className="w-full bg-white/90 backdrop-blur-sm"
+            className="w-full border-zinc-700 bg-zinc-900/50 text-white placeholder:text-zinc-400 focus:border-[#FE8888] focus:ring-[#FE8888]/10"
           />
         )
       case "textarea":
         return (
           <Textarea
             placeholder={`Enter ${field.name.toLowerCase()}`}
-            className="min-h-[100px] w-full bg-white/90 backdrop-blur-sm"
+            className="min-h-[100px] w-full border-zinc-700 bg-zinc-900/50 text-white placeholder:text-zinc-400 focus:border-[#FE8888] focus:ring-[#FE8888]/10"
           />
         )
       case "stars":
@@ -67,51 +68,61 @@ export default function PreviewCard({ projectData }: PreviewCardProps) {
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
-          className={`h-6 w-6 cursor-pointer ${
-            star <= value ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+          className={`h-6 w-6 cursor-pointer transition-colors ${
+            star <= value ? "fill-[#FE8888] text-[#FE8888]" : "text-zinc-600"
           }`}
         />
       ))}
     </div>
   )
 
+  const getBackgroundStyles = () => {
+    if (projectData.style.type === "gradient") {
+      return {
+        background: projectData.style.value,
+      }
+    }
+
+    return {
+      backgroundImage: `linear-gradient(to bottom, rgba(24, 24, 27, 0.8), rgba(24, 24, 27, 0.95)), url(${projectData.style.value})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }
+  }
+
   return (
     <Card
-      className="overflow-hidden"
-      style={
-        projectData.style.type === "gradient"
-          ? { background: projectData.style.value }
-          : {
-              backgroundImage: `url(${projectData.style.value})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
-      }
+      className="overflow-hidden border-zinc-800 bg-zinc-900/30 shadow-2xl"
+      style={getBackgroundStyles()}
     >
-      <div className="bg-black/40 backdrop-blur-[1px]">
-        <CardHeader className="text-white">
-          <CardTitle className="text-2xl">{projectData.name}</CardTitle>
-          <CardDescription className="text-white/90">
+      <div className="relative">
+        <div className="absolute -left-32 -top-32 h-64 w-64 rounded-full bg-[#FE8888]/10 blur-3xl" />
+        <div className="absolute -bottom-32 -right-32 h-64 w-64 rounded-full bg-[#FF555F]/10 blur-3xl" />
+        <CardHeader className="relative">
+          <CardTitle className="font-poppins text-2xl font-bold text-white">
+            {projectData.name}
+          </CardTitle>
+          <CardDescription className="text-zinc-400">
             {projectData.description}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-6 text-black">
+        <CardContent className="relative">
+          <div className="space-y-6">
             {projectData.fields.map((field) => (
               <div key={field.id} className="space-y-2">
-                <Label className="text-white">
+                <Label className="text-zinc-300">
                   {field.name}
                   {field.required && (
-                    <span className="ml-1 text-red-300">*</span>
+                    <span className="ml-1 text-[#FE8888]">*</span>
                   )}
                 </Label>
                 {renderPreviewField(field)}
               </div>
             ))}
             <Button
-              className="w-full bg-white/90 text-gray-800 hover:bg-white"
+              className="w-full bg-[#FE8888] text-white transition-colors hover:bg-[#FF555F]"
               onClick={() => {
-                toast.success("just a preview ")
+                toast.success("Just a preview")
               }}
             >
               Submit Feedback

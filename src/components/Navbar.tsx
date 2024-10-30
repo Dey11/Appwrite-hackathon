@@ -111,7 +111,7 @@ export default function Navbar() {
                   </DropdownMenuItem>
                   <DropdownMenuItem className="text-zinc-300">
                     <MailCheck className="mr-2 h-4 w-4 text-[#FE8888]" />
-                    <span className="text-zinc-400">{user.email}</span>
+                    <span>{user.email}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="text-zinc-300">
                     <Link href="/projects" className="flex w-full items-center">
