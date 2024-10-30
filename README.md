@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hackathon Submission: Rroist
 
-## Getting Started
+## GitHub handles of Team Members  
 
-First, run the development server:
+- [@Dey11](https://github.com/dey11)
+- [@KIWILmao](https://github.com/KIWILmao)
+- [@Krish-Gupta07](https://github.com/Krish-Gupta07)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Title
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Rroist
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project Description    
 
-## Learn More
+A dynamic form-building platform that enables users to design and host customizable forms with ease. Users can personalize their forms by choosing from various backgrounds or gradients and have full control over form fields, including reordering and adding validations. Once designed, forms can be hosted on our domain to collect responses, with responses visible through a dedicated dashboard. Additionally, users can export their forms as React components using our CLI tool, enabling seamless integration into any codebase, similar to shadcn's approach. This project simplifies form management and expands flexibility for developers and users alike.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Inspiration behind the Project  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The inspiration for this project came from the need for a streamlined, flexible solution to create and manage forms without the repetitive and time-consuming setup most developers face. Traditional form builders often lack customization options, making it difficult to fully align with branding or user experience requirements, and integrating these forms into existing projects usually requires additional code and maintenance.
 
-## Deploy on Vercel
+Our platform addresses these pain points by offering a fully customizable form-building experience with a rich selection of backgrounds and gradients, reorderable and editable fields, and built-in validation. Beyond form creation, we provide a hosted domain to collect responses with ease, all managed through an intuitive dashboard. This approach eliminates the need for separate tools or plugins for form creation, hosting, and response handling, offering a one-stop solution.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A significant highlight of our project is the CLI tool that exports the form as a React component, which developers can integrate directly into their codebase. Inspired by tools like shadcn, this CLI enables developers to add complete form code into their projects with a single command, significantly speeding up the development process. This not only boosts productivity but also ensures consistency and modularity, making it a game changer for developers who want to quickly deploy forms without sacrificing customization.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Currently in beta, this project will continue to evolve, with future updates and features that enhance the experience for both developers and end-users. We’re committed to making form management simpler, faster, and more adaptable to real-world needs.
+
+## Future Scope
+The future scope of this project is expansive, with a roadmap aimed at enhancing functionality and user experience. Planned updates include:
+
+- **Component Expansion**: We plan to introduce additional customizable components, like testimonial sections and other common UI elements, that can be seamlessly integrated with the form builder. Also plan to make a documentation section for the same for ease of use.
+  
+- **AI-Powered Insights**: By integrating AI capabilities, users will be able to analyze and summarize form responses, helping them derive actionable insights and saving time on data analysis.
+  
+- **Advanced Customization Options**: Further personalization features, such as custom animations, multi-step forms, and conditional logic, are in the works to increase flexibility and user engagement.
+  
+- **Enhanced Dashboard Analytics**: The dashboard will be upgraded to include more in-depth analytics, helping users track trends and response metrics with ease.
+
+- **Enhanced Security**: Increase security and privacy features. Allow form makers to accept only one response per user.
+
+These upcoming features will further establish our platform as a comprehensive, flexible tool that adapts to a wide range of use cases in form management and beyond.
+
+## Tech Stack    
+
+The technologies I used are:
+- Nextjs
+- Appwrite
+- Commander
+- Inquirer
+
+## Usage of Appwrite
+- Auth
+- Databases
+- Storage
+
+## Project Repo  
+
+[Rroist](https://github.com/Dey11/Appwrite-hackathon)
+
+## Demo Video/Photos  
+
+[YouTube link](https://youtu.be/S2Z-rImbO2E)
+[Deployed link](https://rroist.vercel.app)
