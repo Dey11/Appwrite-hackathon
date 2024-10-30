@@ -86,19 +86,19 @@ export default function ProjectDetailsCard({
               <Label>Preview url</Label>
               <div className="flex items-center gap-2">
                 <Link
-                  href={`http://localhost:3000/preview/${projectId}`}
+                  href={`${process.env.NEXT_PUBLIC_APP_URL}/preview/${projectId}`}
                   className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
                 >
                   <Button
                     className={`w-full border bg-transparent text-white hover:bg-transparent hover:underline`}
-                  >{`http://localhost:3000/preview/${projectId}`}</Button>
+                  >{`${process.env.NEXT_PUBLIC_APP_URL}/preview/${projectId}`}</Button>
                 </Link>
                 <Button
                   size="icon"
                   variant="outline"
                   onClick={() =>
                     copyToClipboard(
-                      `http://localhost:3000/preview/${projectId}`,
+                      `${process.env.NEXT_PUBLIC_APP_URL}/preview/${projectId}`,
                     )
                   }
                   className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"
@@ -113,13 +113,13 @@ export default function ProjectDetailsCard({
               <div className="flex items-center gap-2">
                 <Button
                   className={`mt-1.5 border border-zinc-800 bg-transparent bg-zinc-900 text-zinc-500 placeholder:text-zinc-500 hover:bg-transparent focus:border-[#FE8888] focus:ring-[#FE8888]`}
-                >{`http://localhost:3000/preview/${projectId}`}</Button>
+                >{`${process.env.NEXT_PUBLIC_APP_URL}/preview/${projectId}`}</Button>
                 <Button
                   size="icon"
                   variant="outline"
                   onClick={() =>
                     copyToClipboard(
-                      `http://localhost:3000/preview/${projectId}`,
+                      `${process.env.NEXT_PUBLIC_APP_URL}/preview/${projectId}`,
                     )
                   }
                   className="mt-1.5 border-zinc-800 bg-zinc-900 text-white placeholder:text-zinc-500 focus:border-[#FE8888] focus:ring-[#FE8888]"

@@ -2,9 +2,12 @@ import FeedbackForm from "@/components/FeedbackForm"
 import { Star } from "lucide-react"
 
 const PreviewPage = async ({ params }: { params: { id: string } }) => {
-  const res = await fetch(`http://localhost:3000/api/preview/${params.id}`, {
-    cache: "no-cache",
-  })
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/preview/${params.id}`,
+    {
+      cache: "no-cache",
+    },
+  )
   const project = await res.json()
   console.log(project)
 
