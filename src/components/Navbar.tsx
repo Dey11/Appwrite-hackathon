@@ -61,7 +61,6 @@ export default function Navbar() {
       }
     }
     getUser()
-    console.log(authState, "authState in navbar")
   }, [updateAuthState, authState])
 
   if (path == "/login" || path == "/signup" || path.includes("/preview")) {

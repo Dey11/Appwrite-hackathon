@@ -66,7 +66,6 @@ class AuthService {
         `${process.env.NEXT_PUBLIC_APP_URL}/projects`,
         process.env.NEXT_PUBLIC_APP_URL ?? "",
       )
-      console.log(res)
 
       return { success: true, message: "Success", payload: undefined }
     } catch (error) {

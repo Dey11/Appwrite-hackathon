@@ -1,4 +1,12 @@
-import { Databases, Client, ID, AppwriteException, Query } from "appwrite"
+import {
+  Databases,
+  Client,
+  ID,
+  AppwriteException,
+  Query,
+  Permission,
+  Role,
+} from "appwrite"
 import {
   Collection,
   DbResponse,
@@ -8,6 +16,7 @@ import {
   UserDocument,
 } from "./types"
 import authService from "./auth"
+import { createAdminClient } from "./appwriteServer"
 
 const collectionId = {
   project: "6711fa430021998ea7ca",
@@ -248,42 +257,6 @@ class DatabaseService {
     }
   }
 
-  // create feedback
-  async createFeedback(
-    data: {
-      [key: string]: any
-    },
-    projectId: string,
-  ): Promise<DbResponse<FeedbackDocument>> {
-    try {
-      const project = await this.findProjectById(projectId)
-      if (!project.success) {
-        throw new Error(project.message)
-      }
-
-      const userId = project.payload.userId
-
-      const response: FeedbackDocument = await this.databases.createDocument(
-        process.env.NEXT_PUBLIC_DATABASE_ID ?? "",
-        collectionId.feedback,
-        ID.unique(),
-        {
-          data: JSON.stringify(data),
-          user: userId,
-          project: projectId,
-        },
-      )
-
-      return {
-        success: true,
-        message: "Success",
-        payload: response,
-      }
-    } catch (error) {
-      return this.handleError(error)
-    }
-  }
-
   // get all feedback by project id
   async getAllFeedback(projectId: string) {
     const feedback = await this.databases.getDocument(
@@ -291,7 +264,6 @@ class DatabaseService {
       collectionId.project,
       projectId,
     )
-    console.log(feedback)
   }
 
   // update any document

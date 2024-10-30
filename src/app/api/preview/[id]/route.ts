@@ -32,7 +32,6 @@ export async function GET(
       "6711fa430021998ea7ca",
       id,
     )
-    console.log(project, "Awdadawdad")
 
     return NextResponse.json({
       success: true,
@@ -43,6 +42,7 @@ export async function GET(
         style: JSON.parse(project.image),
         fields: JSON.parse(project.fields),
         live: project.live,
+        permissions: project.$permissions,
       },
       message: "successful",
     })
