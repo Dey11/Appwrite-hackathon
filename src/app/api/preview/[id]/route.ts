@@ -32,6 +32,7 @@ export async function GET(
       "6711fa430021998ea7ca",
       id,
     )
+    console.log(project, "Awdadawdad")
 
     return NextResponse.json({
       success: true,

@@ -106,7 +106,7 @@ export default function FormFieldsCard({
                                 {...provided.dragHandleProps}
                                 className="mr-2"
                               >
-                                <GripVertical className="h-5 w-5 text-gray-400" />
+                                <GripVertical className="pointer-events-auto h-5 w-5 text-gray-400 hover:text-[#FE8888] focus:text-[#FE8888]" />
                               </div>
                               <span className="text-lg font-medium">
                                 {field.name}
