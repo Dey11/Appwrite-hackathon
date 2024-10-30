@@ -1,6 +1,6 @@
 {
   "name": "appwrite-hackathon-cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/index.js",
   "bin": {
     "appwrite-hackathon-cli": "dist/index.js"
