@@ -3,6 +3,16 @@ import { createAdminClient } from "@/appwrite/appwriteServer"
 import { Collection } from "@/appwrite/types"
 import { ID, Permission, Role } from "node-appwrite"
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders })
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } },
@@ -14,7 +24,7 @@ export async function POST(
       {
         message: "No Document found with that id",
       },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     )
   }
 
@@ -26,7 +36,7 @@ export async function POST(
       {
         message: "Invalid request body",
       },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     )
   }
 
@@ -37,7 +47,7 @@ export async function POST(
       {
         message: "Please provide secret",
       },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     )
   }
 
@@ -53,7 +63,7 @@ export async function POST(
         {
           message: "Invalid secret or project id",
         },
-        { status: 400 },
+        { status: 400, headers: corsHeaders },
       )
     }
     console.log(project)
@@ -74,7 +84,7 @@ export async function POST(
       {
         message: "Feedback created successfully",
       },
-      { status: 201 },
+      { status: 201, headers: corsHeaders },
     )
   } catch (error) {
     console.log(error)
@@ -83,7 +93,7 @@ export async function POST(
       {
         message: "Error creating feedback",
       },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     )
   }
 }
