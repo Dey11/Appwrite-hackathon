@@ -17,8 +17,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Star } from "lucide-react"
 import { toast } from "sonner"
-import dbservice from "@/appwrite/db"
 import { useParams } from "next/navigation"
+import { createFeedbackAction } from "@/actions/createFeedback"
 
 interface FormField {
   name: string
@@ -27,6 +27,7 @@ interface FormField {
 }
 
 interface ProjectData {
+  userId: string
   name: string
   description: string
   fields: FormField[]
@@ -35,6 +36,7 @@ interface ProjectData {
     value: string
   }
   live: boolean
+  permissions: [string]
 }
 
 interface PreviewCardProps {
@@ -140,7 +142,12 @@ export default function FeedbackForm({ projectData }: PreviewCardProps) {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        await dbservice.createFeedback(values, id)
+        await createFeedbackAction(
+          values,
+          id,
+          projectData.userId,
+          projectData.permissions,
+        )
         resetForm()
         toast.success("Feedback sended successfully")
       } catch (error) {

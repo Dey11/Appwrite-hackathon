@@ -9,7 +9,6 @@ const PreviewPage = async ({ params }: { params: { id: string } }) => {
     },
   )
   const project = await res.json()
-  console.log(project)
 
   const HeaderSection = () => (
     <div className="mb-12 text-center">
@@ -109,7 +108,9 @@ const PreviewPage = async ({ params }: { params: { id: string } }) => {
             <div className="absolute -top-3 right-4 z-10 rounded-full bg-gradient-to-r from-[#FF555F] to-[#FE8888] px-4 py-1 text-sm font-medium text-white shadow-xl">
               Welcome
             </div>
-            <FeedbackForm projectData={projectData} />
+            <FeedbackForm
+              projectData={projectData}
+            />
           </div>
         </div>
       </div>
